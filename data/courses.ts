@@ -70,6 +70,6 @@ export const courses: Course[] = [
     rating: 4.7,
     studentCount: 98,
     price: 129,
-    imageUrl: "/courses/aspnet.jpg",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5agxXUSsI3J6nJYssKdxaZEO5xpTCsh4P6U4qKGXH2w&s=10",
   },
 ];
