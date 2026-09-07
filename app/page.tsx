@@ -1,6 +1,5 @@
-import CourseCard from "@/features/courses/components/CourseCard/CourseCard";
-import { courses } from "@/data/courses";
-import CourseList from "@/features/courses/components/CourseList/CourseList";
+
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -13,9 +12,12 @@ export default function Home() {
         <p className="mt-2 text-slate-400">
           Learn new skills with online and offline courses.
         </p>
+         <div>
+            <h1>LearnFlow</h1>
 
-        <div className="mt-8">
-          <CourseList />
+            <Link href="/courses">
+                Browse Courses
+            </Link>
         </div>
       </div>
 
