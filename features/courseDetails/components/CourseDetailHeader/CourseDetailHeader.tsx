@@ -1,37 +1,40 @@
 import type { Course } from "@/data/courses";
-import {
-  FaStar,
-  FaUsers,
-  FaClock,
-} from "react-icons/fa";
 
-type props = {
-    course : Course;
-}
+type Props = {
+    course: Course;
+};
 
-export default function CourseDetailHeader({ course }: props) {
+export default function CourseDetailHeader({ course }: Props) {
     return (
-        <div className="bg-slate-950 px-6 py-10">
-            <h1 className="text-3xl font-bold text-white">{course.title}</h1>
-            <p className="text-gray-300">{course.description}</p>
-             <div className="flex items-center gap-4 text-sm text-slate-400">
-                <span className="flex items-center gap-1.5">
-                <FaStar className="text-yellow-400" />
-                {course.rating}
-                </span>
+        <header
+            className="relative overflow-hidden rounded-lg bg-cover bg-center"
+            style={{ backgroundImage: `url(${course.imageUrl})` }}
+        >
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-slate-950/75" />
 
-                <span className="flex items-center gap-1.5">
-                <FaUsers />
-                {course.studentCount}
-                </span>
+            <div className="relative px-8 py-16">
+                {/* Category & Level */}
+                <div className="mb-4 flex items-center gap-3">
+                    <span className="text-sm font-medium text-blue-400">
+                        {course.category}
+                    </span>
 
-                <span className="flex items-center gap-1.5">
-                <FaClock />
-                {course.duration.value}
-                {course.duration.unit === "hours" ? "h" : "d"}
-                </span>
+                    <span className="rounded-full bg-slate-800/80 px-3 py-1 text-xs font-medium text-slate-300">
+                        {course.level}
+                    </span>
+                </div>
+
+                {/* Title */}
+                <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-white">
+                    {course.title}
+                </h1>
+
+                {/* Description */}
+                <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">
+                    {course.description}
+                </p>
             </div>
-            <p className="text-gray-300">{course.instructor.name} - {course.instructor.jobTitle}</p>
-        </div>
-    )
+        </header>
+    );
 }

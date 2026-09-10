@@ -26,7 +26,7 @@ export type Course = {
   learningOutcomes: string[];
   schedule : ScheduleItem[];
   location? : string;
-  curriculum : string;
+  learningPath : string;
   targetAudience: string[];
 };
 
@@ -71,8 +71,8 @@ export const courses: Course[] = [
       { day: "Monday", time: "10:00 AM - 12:00 PM" },
       { day: "Wednesday", time: "2:00 PM - 4:00 PM" },
     ],
-    location: "Online",
-    curriculum: "React, TypeScript, Redux, Testing",
+    location: "Paris, France",
+    learningPath: "React, TypeScript, Redux, Testing",
     targetAudience: ["Web Developers", "Frontend Engineers"],
   },
   {
@@ -109,7 +109,7 @@ export const courses: Course[] = [
       { day: "Thursday", time: "3:00 PM - 5:00 PM" },
     ],
     location: "Online",
-    curriculum: "C#, ASP.NET Core, RESTful APIs, Authentication",
+    learningPath: "C#, ASP.NET Core, RESTful APIs, Authentication",
     targetAudience: ["Backend Developers", ".NET Developers"],
   },
   {
@@ -135,9 +135,39 @@ export const courses: Course[] = [
     studentCount: 98,
     price: 129,
     imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5agxXUSsI3J6nJYssKdxaZEO5xpTCsh4P6U4qKGXH2w&s=10",
-    learningFormat: "Offline",
+    learningFormat: "Live",
     learningOutcomes: [
       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
+      "Implement authentication and authorization in ASP.NET Core applications.",
+      "Optimize application performance and scalability.",
+       "Develop RESTful APIs using ASP.NET Core.",
       "Implement authentication and authorization in ASP.NET Core applications.",
       "Optimize application performance and scalability.",
     ],
@@ -145,8 +175,8 @@ export const courses: Course[] = [
       { day: "Tuesday", time: "1:00 PM - 3:00 PM" },
       { day: "Thursday", time: "3:00 PM - 5:00 PM" },
     ],
-    location: "Online",
-    curriculum: "C#, ASP.NET Core, RESTful APIs, Authentication",
+    location: "",
+    learningPath: "C#, ASP.NET Core, RESTful APIs, Authentication",
     targetAudience: ["Backend Developers", ".NET Developers"],
   },
   {
@@ -172,7 +202,7 @@ export const courses: Course[] = [
     studentCount: 98,
     price: 129,
     imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5agxXUSsI3J6nJYssKdxaZEO5xpTCsh4P6U4qKGXH2w&s=10",
-    learningFormat: "Offline",
+    learningFormat: "Video",
     learningOutcomes: [
       "Develop RESTful APIs using ASP.NET Core.",
       "Implement authentication and authorization in ASP.NET Core applications.",
@@ -182,8 +212,8 @@ export const courses: Course[] = [
       { day: "Tuesday", time: "1:00 PM - 3:00 PM" },
       { day: "Thursday", time: "3:00 PM - 5:00 PM" },
     ],
-    location: "Online",
-    curriculum: "C#, ASP.NET Core, RESTful APIs, Authentication",
+    location: "",
+    learningPath: "C#, ASP.NET Core, RESTful APIs, Authentication",
     targetAudience: ["Backend Developers", ".NET Developers"],
   },
 ];

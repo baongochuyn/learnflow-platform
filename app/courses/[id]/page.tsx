@@ -12,18 +12,23 @@ export default async function CourseDetailsPage({ params }: { params: { id: stri
     console.log(course);
     return (
         <div className="min-h-screen bg-slate-950 px-6 py-10">
-            <button className="mb-4 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-                <a href="/courses">Back to Courses</a>
-            </button>
             <div  className="mx-auto max-w-7xl">
+
+                <a href="/courses" className="mb-6 inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700" > ← Back to Courses </a>
+
                 {course ? (
                     <div>
                         <CourseDetailHeader course={course} />
-                        <CourseDetailMainContent course={course} />
-                        <EnrollmentCard course={course} />
+                        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]"> 
+                            <CourseDetailMainContent course={course} /> 
+                            
+                            <aside className="lg:sticky lg:top-6 lg:self-start"> 
+                                <EnrollmentCard course={course} /> 
+                            </aside>
+                        </div>
                     </div>
                 ) : (
-                    <p>Course not found.</p>
+                    <p className="text-slate-400">Course not found.</p>
                 )}
             </div>
         </div>
