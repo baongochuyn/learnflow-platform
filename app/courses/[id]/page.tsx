@@ -1,5 +1,5 @@
 import {courses} from "@/data/courses";
-import type { Course } from "@/data/courses";
+import type { Course } from "@/types/courses";
 import CourseDetailHeader from "@/features/courseDetails/components/CourseDetailHeader/CourseDetailHeader";
 import CourseDetailMainContent from "@/features/courseDetails/components/CourseDetailMainContent/CourseDetailMainContent";
 import EnrollmentCard from "@/features/courseDetails/components/EnrollmentCard/EnrollmentCard";

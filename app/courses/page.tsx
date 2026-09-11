@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 import {courses} from "@/data/courses";
-import type { CourseLevel } from "@/data/courses";
+import type { CourseLevel } from "@/types/courses";
 
 import CourseFilters from "@/features/courses/components/CourseFilters/CourseFilters";
 import CourseList from "@/features/courses/components/CourseList/CourseList";
