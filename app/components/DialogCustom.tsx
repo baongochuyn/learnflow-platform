@@ -40,7 +40,7 @@ export default function DialogCustom({
             bgcolor: "rgba(15, 23, 42, 0.95)",
             backdropFilter: "blur(16px)",
             color: "#f8fafc",
-            borderRadius: 2, 
+            borderRadius: 1, 
             border: "1px solid rgba(255, 255, 255, 0.1)",
             boxShadow: "0 20px 50px rgba(0, 0, 0, 0.6)",
             p: 1,

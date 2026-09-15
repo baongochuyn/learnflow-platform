@@ -7,7 +7,7 @@ import LoginDialog from "@/features/auth/components/LoginDialog/LoginDialog";
 import { useAuth } from "@/context/AuthContext";
 import DialogCustom from "@/app/components/DialogCustom";
 import AppSnackbar from "@/app/components/Snackbar/AppSnackbar";
-import Typography from "@mui/material/Typography";
+import {Typography ,AlertColor}  from "@mui/material";
 
 
 export default function EnrollmentSection({ course }: { course: Course }) {
@@ -15,6 +15,8 @@ export default function EnrollmentSection({ course }: { course: Course }) {
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>("success");
+
 
     const [loginOpen, setLoginOpen] = useState(false);
     const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -29,17 +31,20 @@ export default function EnrollmentSection({ course }: { course: Course }) {
     
     const handleLoginSuccess = () => {
         setSnackbarMessage("Login successful!");
+        setSnackbarSeverity("success");
         setSnackbarOpen(true);
         setLoginOpen(false);
         setConfirmationOpen(true);
     };
 
-    const handleConfirmationClose = () => {
-        setConfirmationOpen(false);
+    const handleLoginError = (message: string) => {
+        setSnackbarMessage(message);
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
     };
 
     const handleConfirmEnrollment = () => {
-        // Handle the enrollment logic here
+        // TODO: Handle the enrollment logic here
         setConfirmationOpen(false);
         setIsEnrolled(true);
         setSnackbarMessage("Enrollment successful!");
@@ -53,6 +58,7 @@ export default function EnrollmentSection({ course }: { course: Course }) {
             <LoginDialog open={loginOpen} 
                         onClose={() => setLoginOpen(false)} 
                         onLoginSuccess={handleLoginSuccess} 
+                        onLoginError={handleLoginError}
                         />
             
             <DialogCustom
@@ -71,7 +77,7 @@ export default function EnrollmentSection({ course }: { course: Course }) {
                 open={snackbarOpen}
                 message={snackbarMessage}
                 onClose={() => setSnackbarOpen(false)}
-                severity= "success"
+                severity={snackbarSeverity}
             />
         </div>
     )

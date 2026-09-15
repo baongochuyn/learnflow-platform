@@ -1,10 +1,9 @@
-//TODO: them state cho username va password, va truyen vao login function
 import { useState } from "react";
 import { DialogTitle, DialogContent, TextField, Button, Typography, DialogActions, Link } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import { useAuth } from "@/context/AuthContext";
 
-export default function LoginDialog({ open, onClose, onLoginSuccess }: { open: boolean; onClose: () => void; onLoginSuccess: () => void }) {
+export default function LoginDialog({ open, onClose, onLoginSuccess, onLoginError }: { open: boolean; onClose: () => void; onLoginSuccess: () => void; onLoginError: (message: string) => void }) {
     const { login } = useAuth();
     const [error, setError] = useState<string | null>(null);
     const [username, setUsername] = useState("");
@@ -16,6 +15,7 @@ export default function LoginDialog({ open, onClose, onLoginSuccess }: { open: b
             onLoginSuccess();
         }else {
             setError(reponse.message);
+            onLoginError(reponse.message);
         }
     };
     return (
@@ -28,7 +28,7 @@ export default function LoginDialog({ open, onClose, onLoginSuccess }: { open: b
             bgcolor: "rgba(15, 23, 42, 0.95)",
             backdropFilter: "blur(16px)",
             color: "#f8fafc",
-            borderRadius: 2,
+            borderRadius: 1,
             border: "1px solid rgba(255, 255, 255, 0.1)",
             boxShadow: "0 20px 50px rgba(0, 0, 0, 0.6)",
             p: 1,

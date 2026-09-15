@@ -11,7 +11,7 @@ export default function CourseDetailHeader({ course }: Props) {
       sx={{
         position: "relative",
         overflow: "hidden",
-        borderRadius: 3,
+        borderRadius: 0.5,
         backgroundImage: `url(${course.imageUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",

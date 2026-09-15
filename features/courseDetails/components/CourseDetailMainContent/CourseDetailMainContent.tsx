@@ -3,7 +3,7 @@ import type { Course } from "@/types/courses";
 
 export default function CourseDetailMainContent({ course }: { course: Course }) {
   return (
-    <Box sx={{ bgcolor: "rgba(15, 23, 42, 0.8)", border: "1px solid rgba(148, 163, 184, 0.15)", borderRadius: 3, p: { xs: 2.5, md: 4 } }}>
+    <Box>
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" sx={{ fontWeight: 700, mb: 1.5 }}>
           What you&apos;ll learn?

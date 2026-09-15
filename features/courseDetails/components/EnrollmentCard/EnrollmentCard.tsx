@@ -16,7 +16,7 @@ export default function EnrollmentCard({ course, isEnrolled, onEnroll }: { cours
         elevation={0}
       sx={{
         p: 3,
-        borderRadius: 2,
+        borderRadius: 1,
         bgcolor: "rgba(15, 23, 42, 0.75)",
         backdropFilter: "blur(16px)",
         border: "1px solid rgba(255, 255, 255, 0.1)",
