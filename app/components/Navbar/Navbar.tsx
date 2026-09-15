@@ -2,58 +2,101 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { AppBar, Box, Button, Stack, Toolbar, Typography } from "@mui/material";
 
 export default function Navbar() {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    const navItems = [
-        { name: "Home", href: "/" },
-        { name: "Courses", href: "/courses" },
-        { name: "Schedule", href: "/schedule" },
-        { name: "Tasks", href: "/tasks" },
-    ];
+  const navItems = [
+    { name: "Home", href: "/" },
+    { name: "Courses", href: "/courses" },
+    { name: "Schedule", href: "/schedule" },
+    { name: "Tasks", href: "/tasks" },
+  ];
+
   return (
-    <nav className="bg-gray-800 text-white p-4 sticky top-0 z-50 w-full ">
-      <div className="container mx-auto flex justify-between items-center">
-
-        {/* Logo with Gradient & Glow effect */}
-        <Link 
-          href="/" 
-          className="group relative text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200 bg-clip-text text-transparent transition-all hover:scale-105"
-        >
-          Learn<span className="text-indigo-400">Flow</span>
-          <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-gradient-to-r from-amber-400 to-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{
+        bgcolor: "rgba(15, 23, 42, 0.9)",
+        backdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(148, 163, 184, 0.15)",
+      }}
+    >
+      <Toolbar sx={{ maxWidth: 1200, width: "100%", mx: "auto", minHeight: 72 }}>
+        <Link href="/" style={{ textDecoration: "none" }}>
+          <Button
+            sx={{
+              p: 0,
+              minWidth: 0,
+              color: "#f59e0b",
+              fontWeight: 900,
+              letterSpacing: 1.2,
+              textTransform: "none",
+              fontSize: "1.7rem",
+              "&:hover": { color: "#fbbf24" },
+            }}
+          >
+            <Typography
+              component="span"
+              sx={{
+                background: "linear-gradient(135deg, #fbbf24 0%, #fb923c 50%, #fef3c7 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                fontWeight: 900,
+              }}
+            >
+              Learn
+            </Typography>
+            <Typography component="span" sx={{ color: "#a5b4fc", fontWeight: 900 }}>
+              Flow
+            </Typography>
+          </Button>
         </Link>
 
-        {/* Navigation Links */}
-        <div className="flex items-center space-x-1 sm:space-x-2">
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Stack direction="row" spacing={1}>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
 
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`relative px-4 py-2 text-sm font-medium transition-colors group ${
-                  isActive ? "text-amber-400 font-semibold" : "text-gray-300 hover:text-white"
-                }`}
-              >
-                {item.name}
-
-                {/*  Active Mode */}
-                <span
-                  className={`absolute inset-x-2 -bottom-1 h-[2px] rounded-full bg-amber-400 transition-transform duration-300 ${
-                    isActive 
-                      ? "scale-x-100" 
-                      : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
+              <Link key={item.href} href={item.href} style={{ textDecoration: "none" }}>
+                <Button
+                  sx={{
+                    position: "relative",
+                    color: isActive ? "#fbbf24" : "#cbd5e1",
+                    fontWeight: isActive ? 700 : 500,
+                    px: 1.5,
+                    py: 0.75,
+                    minWidth: 0,
+                    textTransform: "none",
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      left: 12,
+                      right: 12,
+                      bottom: 6,
+                      height: 2,
+                      borderRadius: 999,
+                      backgroundColor: "#f59e0b",
+                      transform: isActive ? "scaleX(1)" : "scaleX(0)",
+                      transformOrigin: "center",
+                      transition: "transform 0.2s ease",
+                    },
+                    "&:hover::after": {
+                      transform: "scaleX(1)",
+                    },
+                  }}
+                >
+                  {item.name}
+                </Button>
               </Link>
             );
           })}
-        </div>
-      </div>
-    </nav>
+        </Stack>
+      </Toolbar>
+    </AppBar>
   );
 }

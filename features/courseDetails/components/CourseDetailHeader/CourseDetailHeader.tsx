@@ -1,40 +1,38 @@
-import type { Course } from "@/data/courses";
+import { Box, Chip, Stack, Typography } from "@mui/material";
+import type { Course } from "@/types/courses";
 
 type Props = {
-    course: Course;
+  course: Course;
 };
 
 export default function CourseDetailHeader({ course }: Props) {
-    return (
-        <header
-            className="relative overflow-hidden rounded-lg bg-cover bg-center"
-            style={{ backgroundImage: `url(${course.imageUrl})` }}
-        >
-            {/* Dark overlay */}
-            <div className="absolute inset-0 bg-slate-950/75" />
+  return (
+    <Box
+      sx={{
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 3,
+        backgroundImage: `url(${course.imageUrl})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Box sx={{ position: "absolute", inset: 0, bgcolor: "rgba(2, 8, 23, 0.78)" }} />
 
-            <div className="relative px-8 py-16">
-                {/* Category & Level */}
-                <div className="mb-4 flex items-center gap-3">
-                    <span className="text-sm font-medium text-blue-400">
-                        {course.category}
-                    </span>
+      <Box sx={{ position: "relative", px: { xs: 3, md: 5 }, py: { xs: 6, md: 8 } }}>
+        <Stack direction="row" spacing={1.5} sx={{ mb: 2, flexWrap: "wrap" }}>
+          <Chip label={course.category} sx={{ bgcolor: "rgba(96, 165, 250, 0.15)", color: "#93c5fd", fontWeight: 700 }} />
+          <Chip label={course.level} sx={{ bgcolor: "rgba(148, 163, 184, 0.2)", color: "#e2e8f0", fontWeight: 700 }} />
+        </Stack>
 
-                    <span className="rounded-full bg-slate-800/80 px-3 py-1 text-xs font-medium text-slate-300">
-                        {course.level}
-                    </span>
-                </div>
+        <Typography variant="h3" sx={{ maxWidth: 800, fontWeight: 800, letterSpacing: -0.8 }}>
+          {course.title}
+        </Typography>
 
-                {/* Title */}
-                <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-white">
-                    {course.title}
-                </h1>
-
-                {/* Description */}
-                <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">
-                    {course.description}
-                </p>
-            </div>
-        </header>
-    );
+        <Typography variant="body1" color="text.secondary" sx={{ mt: 2, maxWidth: 760, lineHeight: 1.8 }}>
+          {course.description}
+        </Typography>
+      </Box>
+    </Box>
+  );
 }
