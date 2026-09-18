@@ -3,21 +3,32 @@ import { DialogTitle, DialogContent, TextField, Button, Typography, DialogAction
 import Dialog from "@mui/material/Dialog";
 import { useAuth } from "@/context/AuthContext";
 
-export default function LoginDialog({ open, onClose, onLoginSuccess, onLoginError }: { open: boolean; onClose: () => void; onLoginSuccess: () => void; onLoginError: (message: string) => void }) {
+export default function LoginDialog({ 
+    open, 
+    onClose, 
+    onSignUpClick
+}: { 
+    open: boolean;
+    onClose: () => void;
+    onSignUpClick: () => void;
+ }) 
+    {
     const { login } = useAuth();
     const [error, setError] = useState<string | null>(null);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     async function handleLogin(){
+        // TODO: Implement the login logic
         const reponse = await login(username, password); 
         if (reponse.success){
-            onLoginSuccess();
+            onClose();
         }else {
             setError(reponse.message);
-            onLoginError(reponse.message);
         }
     };
+    
+
     return (
     <Dialog open={open} onClose={onClose}
     fullWidth
@@ -61,9 +72,15 @@ export default function LoginDialog({ open, onClose, onLoginSuccess, onLoginErro
         <DialogActions sx={{ padding: "20px", textAlign: "center" }}>
             <Typography>
                 Don't have an account?
-                <Link href="/signup">Sign up</Link>
+                <Link 
+                    component="button"
+                    sx={{ ml: 0.5 }}
+                    onClick={onSignUpClick}
+                >
+                    Sign up
+                </Link>
             </Typography>
         </DialogActions>
-    </Dialog>   
+    </Dialog>
     );
 }

@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import "./globals.css";
 
 import { AuthProvider } from "@/context/AuthContext";
+import { AuthDialogProvider } from "@/context/AuthDialogContext";
 import { Providers } from "./providers";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -32,11 +33,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <Providers>
           <AuthProvider>
-            <Navbar />
-            <Box component="main" sx={{ flex: 1, bgcolor: "#020817" }}>
-              {children}
-            </Box>
-            <Footer />
+            <AuthDialogProvider>
+              <Navbar />
+              <Box component="main" sx={{ flex: 1, bgcolor: "#020817" }}>
+                {children}
+              </Box>
+              <Footer />
+            </AuthDialogProvider>
           </AuthProvider>
         </Providers>
       </body>

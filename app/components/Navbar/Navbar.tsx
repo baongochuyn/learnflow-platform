@@ -1,18 +1,24 @@
 "use client";
 
+import { useState } from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AppBar, Box, Button, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Stack, Toolbar, Typography, IconButton, AlertColor } from "@mui/material";
+import LoginIcon from "@mui/icons-material/Login";
+
+import { useAuthDialog } from "@/context/AuthDialogContext";
+import AuthDialogs from "@/features/auth/components/AuthDialog/AuthDialog";
 
 export default function Navbar() {
-  const pathname = usePathname();
-
-  const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Courses", href: "/courses" },
-    { name: "Schedule", href: "/schedule" },
-    { name: "Tasks", href: "/tasks" },
-  ];
+    const { openLogin } = useAuthDialog();
+    const pathname = usePathname();
+    const navItems = [
+        { name: "Home", href: "/" },
+        { name: "Courses", href: "/courses" },
+        { name: "Schedule", href: "/schedule" },
+        { name: "Tasks", href: "/tasks" },
+    ];
 
   return (
     <AppBar
@@ -96,6 +102,32 @@ export default function Navbar() {
             );
           })}
         </Stack>
+        <IconButton sx={{
+                    position: "relative",
+                    color: "#cbd5e1",
+                    px: 1.5,
+                    py: 0.75,
+                    minWidth: 0,
+                    textTransform: "none",
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      left: 12,
+                      right: 12,
+                      bottom: 6,
+                      height: 2,
+                      borderRadius: 999,
+                      backgroundColor: "#f59e0b",
+                      transform: "scaleX(0)",
+                      transformOrigin: "center",
+                      transition: "transform 0.2s ease",
+                    },
+                  }}
+                  onClick={() => openLogin()}>
+            <LoginIcon sx={{ mr: 0.5 }} />
+          Sign In
+        </IconButton>
+        <AuthDialogs />
       </Toolbar>
     </AppBar>
   );
