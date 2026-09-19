@@ -4,14 +4,16 @@ import { createContext, useContext, useState, ReactNode } from "react";
 import type { LoginResult } from "@/types/auth";
 import { validateLogin, validateSignUp } from "@/validators/authValidator";
 import {users} from "@/data/users";
+import type { StudentSignUpFormData, TeacherSignUpFormData } from "@/types/auth";
 
 type AuthContextType = {
   isLoggedIn: boolean;
   login: (username: string, password: string) => Promise<LoginResult>;
-  signUp: (username: string, email: string, password: string, confirmPassword: string) => Promise<LoginResult>;
   logout: () => void;
   currentUser: string | null;
   setCurrentUser: (user: string | null) => void;
+  StudentSignUp: (student: StudentSignUpFormData) => Promise<LoginResult>;
+  TeacherSignUp: (teacher: TeacherSignUpFormData) => Promise<LoginResult>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,12 +22,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Default: chưa đăng nhập
   const [currentUser, setCurrentUser] = useState<string | null>(null);
 
-  async function signUp(username: string, email: string, password: string, confirmPassword: string): Promise<LoginResult> {
-    const validationError = validateSignUp(username, email, password, confirmPassword);
+  async function StudentSignUp(user: StudentSignUpFormData): Promise<LoginResult> {
+    const validationError = validateSignUp(user.username, user.email, user.password, user.confirmPassword);
     if (validationError) {
       return Promise.resolve({ success: false, message: validationError });
     }
-    const newUser = { id: users.length + 1, username, email, password, roleId: 1 };
+    const newUser = { id: users.length + 1, username: user.username, email: user.email, password: user.password, roleId: 1 };
+    users.push(newUser);
+
+    return Promise.resolve({ success: true });
+  }
+
+  async function TeacherSignUp(user: TeacherSignUpFormData): Promise<LoginResult> {
+    const validationError = validateSignUp(user.username, user.email, user.password, user.confirmPassword);
+    if (validationError) {
+      return Promise.resolve({ success: false, message: validationError });
+    }
+    const newUser = { id: users.length + 1, username: user.username, email: user.email, password: user.password, roleId: 2 };
     users.push(newUser);
 
     return Promise.resolve({ success: true });
@@ -52,7 +65,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => setIsLoggedIn(false);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, signUp, currentUser, setCurrentUser }}>
+    <AuthContext.Provider value={{ 
+      isLoggedIn,
+      currentUser,
+      login, 
+      logout, 
+      setCurrentUser,
+      StudentSignUp,
+      TeacherSignUp
+    }}
+    >
       {children}
     </AuthContext.Provider>
   );

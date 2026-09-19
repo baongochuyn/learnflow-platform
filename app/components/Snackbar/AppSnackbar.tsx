@@ -7,20 +7,32 @@ export default function AppSnackbar({ open, message, onClose, severity }: { open
             autoHideDuration={4000}
             onClose={onClose}
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              sx={{
+                top: "80px !important",
+                right: "24px",
+            }}
             >
-            <Alert 
-                onClose={onClose} 
-                severity={severity || "info"} 
-                sx={{
-                    width: "100%",
-                    borderRadius: 2,
-                    fontWeight: 600,
-                    boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
-                    backdropFilter: "blur(8px)",
-                    }}
-                >
-                {message}
-            </Alert>
+            <Alert
+        onClose={onClose}
+        severity={severity}
+        variant="filled"
+        sx={{
+          width: "100%",
+          minWidth: "280px",
+          alignItems: "center",
+          borderRadius: 1,
+          fontWeight: 600,
+          fontSize: "0.875rem",
+          bgcolor: "#f59e0b",
+          color: "#020617",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 20px 30px -10px rgba(0, 0, 0, 0.5)",
+          
+        }}
+      >
+        {message}
+      </Alert>
         </Snackbar>
     );
 }

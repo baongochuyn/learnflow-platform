@@ -6,11 +6,13 @@ import { useAuth } from "@/context/AuthContext";
 export default function LoginDialog({ 
     open, 
     onClose, 
-    onSignUpClick
+    onSignUpClick,
+    onLoginSuccess
 }: { 
     open: boolean;
     onClose: () => void;
     onSignUpClick: () => void;
+    onLoginSuccess: () => void;
  }) 
     {
     const { login } = useAuth();
@@ -19,9 +21,11 @@ export default function LoginDialog({
     const [password, setPassword] = useState("");
 
     async function handleLogin(){
-        // TODO: Implement the login logic
         const reponse = await login(username, password); 
         if (reponse.success){
+            onLoginSuccess();
+            setUsername("");
+            setPassword("");
             onClose();
         }else {
             setError(reponse.message);

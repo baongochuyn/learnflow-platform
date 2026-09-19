@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { DialogTitle, DialogContent, TextField, Button, Typography, DialogActions, Link } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
+
 import { useAuth } from "@/context/AuthContext";
+import StudentSignUpForm from "@/features/auth/components/AuthDialog/StudentSignUpForm";
+import TeacherSignUpForm from "@/features/auth/components/AuthDialog/TeacherSignUpForm";
+import type { StudentSignUpFormData, TeacherSignUpFormData } from "@/types/auth";
 
 export default function SignUpDialog({ 
   open, 
@@ -14,15 +18,23 @@ export default function SignUpDialog({
   onLoginClick: () => void;
   onSignUpSuccess: () => void;}
 ) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
-    const { signUp } = useAuth();
+    const { StudentSignUp, TeacherSignUp } = useAuth();
 
-    async function handleSignUp() {
-        const reponse = await signUp(username, email, password, confirmPassword);
+    const [accountType, setAccountType] = useState<"student" | "teacher">("student");
+
+    async function handleStudentSignUp(student : StudentSignUpFormData) {
+        const reponse = await StudentSignUp(student);
+        if (reponse.success) {
+          //TODO : Handle successful sign-up (e.g., show a success message, close the dialog, etc.)
+          onSignUpSuccess();
+          return;
+        } else {
+            setError(reponse.message);
+        }
+    }
+    async function handleTeacherSignUp(teacher : TeacherSignUpFormData) {
+        const reponse = await TeacherSignUp(teacher);
         if (reponse.success) {
           //TODO : Handle successful sign-up (e.g., show a success message, close the dialog, etc.)
           onSignUpSuccess();
@@ -57,31 +69,32 @@ export default function SignUpDialog({
         width: "100%",
         mb: 2}}
         >
-        <TextField
-            label="Username" type="text" placeholder="Username" sx={{ width: "100%", marginBottom: "10px",marginTop: "10px", padding: "8px" }} 
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-            label="Email" type="email" placeholder="Email" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            />
-        <TextField
-            label="Password" type="password" placeholder="Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-        />
-        <TextField
-          label="Confirm Password" type="password" placeholder="Confirm Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        {error && (
-          <Typography color="error">{error}</Typography>
-        )}
+          <Typography sx={{ mb: 2 }}>
+            <Link component="button" onClick={() => setAccountType("student")} sx={ { fontWeight: accountType === "student" ? "bold" : "normal", mr: 1 }}>
+              Sign up as a student
+            </Link>
+            {" or "}
+            <Link component="button" onClick={() => setAccountType("teacher")} sx={ { fontWeight: accountType === "teacher" ? "bold" : "normal", mr: 1 }}>
+              Sign up as a teacher
+            </Link>
+          </Typography>
 
-        <Button onClick={handleSignUp} variant="contained" sx={{ width: "100%" }}>Sign Up</Button>
+          {error && (
+            <Typography color="error">{error}</Typography>
+            )}
+
+          {accountType === "student" && (
+            <StudentSignUpForm
+              onStudentSignUp={(user) => handleStudentSignUp(user)}
+            />
+          )}
+
+          {accountType === "teacher" && (
+            <TeacherSignUpForm
+              onTeacherSignUp={(teacher) => handleTeacherSignUp(teacher)}
+            />
+          )}
+
       </DialogContent>
       <DialogActions>
          <DialogActions sx={{ padding: "20px", textAlign: "center" }}>

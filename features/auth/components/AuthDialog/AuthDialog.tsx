@@ -20,6 +20,9 @@ export default function AuthDialogs() {
         setSuccessMessage("Account created successfully!");
         openLogin();
     }
+    function handleLoginSuccess() {
+        setSuccessMessage("Logged in successfully!");
+    }
 
   return (
     <>
@@ -27,6 +30,7 @@ export default function AuthDialogs() {
         open={activeDialog === "login"}
         onClose={closeAuthDialog}
         onSignUpClick={openSignUp}
+        onLoginSuccess={handleLoginSuccess}
       />
 
       <SignUpDialog

@@ -1,4 +1,4 @@
-function validateUsername(username: string): string | null {
+export function validateUsername(username: string): string | null {
     if (!username.trim()) {
       return "Username is required";
     }
@@ -14,7 +14,7 @@ function validateUsername(username: string): string | null {
     return null;
 }
 
-function validatePassword(password: string): string | null {
+export function validatePassword(password: string): string | null {
     if (!password) {
       return "Password is required";
     }
@@ -42,7 +42,7 @@ function validatePassword(password: string): string | null {
     return null;
 }
 
-function validateEmail(email: string): string | null {
+export function validateEmail(email: string): string | null {
     if (!email.trim()) {
       return "Email is required";
     }
@@ -58,16 +58,15 @@ function validateEmail(email: string): string | null {
 
 export function validateLogin(username: string, password: string): string | null {
     
-    const usernameError = validateUsername(username);
-    if (usernameError) {
-      return usernameError;
-    }
+  if (!username.trim()) {
+    return "Username is required";
+  }
 
-    const passwordError = validatePassword(password);
-    if (passwordError) {
-      return passwordError;
-    }
-    return null;
+  if (!password) {
+    return "Password is required";
+  }
+
+  return null;
   }
 
   export function validateSignUp(
