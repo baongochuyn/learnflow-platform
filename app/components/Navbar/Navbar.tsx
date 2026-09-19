@@ -123,7 +123,7 @@ export default function Navbar() {
               },
             }}
           >
-            Sign In
+            Log In
           </Button>
         </Stack>
         <AuthDialogs />

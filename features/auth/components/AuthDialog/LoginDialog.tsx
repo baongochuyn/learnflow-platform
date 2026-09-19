@@ -55,7 +55,6 @@ export default function LoginDialog({
         width: "100%",
         mb: 2
         }}>
-            <Typography sx={{ mb: 2 }}>You need to log in to enroll in this course.</Typography>
             {error && (
                 <Typography color="error" sx={{ mb: 2 }}>
                     {error}
@@ -71,7 +70,14 @@ export default function LoginDialog({
                 onChange={(e) => setPassword(e.target.value)}
             />
             
-            <Button onClick={handleLogin} variant="contained" sx={{ width: "100%" }}>Login</Button>
+            <Button 
+                onClick={handleLogin} 
+                variant="contained" 
+                sx={{ width: "100%" }}
+                disabled={!username || !password}
+            >
+                Login
+            </Button>
         </DialogContent>
         <DialogActions sx={{ padding: "20px", textAlign: "center" }}>
             <Typography>
