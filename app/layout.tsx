@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { AuthProvider } from "@/context/AuthContext";
 import { AuthDialogProvider } from "@/context/AuthDialogContext";
+import { SnackbarProvider } from "@/context/SnackbarContext";
 import { Providers } from "./providers";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -34,11 +35,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Providers>
           <AuthProvider>
             <AuthDialogProvider>
-              <Navbar />
-              <Box component="main" sx={{ flex: 1, bgcolor: "#020817" }}>
-                {children}
-              </Box>
-              <Footer />
+              <SnackbarProvider>
+                <Navbar />
+                  <Box component="main" sx={{ flex: 1, bgcolor: "#020817" }}>
+                    {children}
+                  </Box>
+                <Footer />
+              </SnackbarProvider>
             </AuthDialogProvider>
           </AuthProvider>
         </Providers>

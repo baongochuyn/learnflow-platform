@@ -3,8 +3,7 @@
 import LoginDialog from "@/features/auth/components/AuthDialog/LoginDialog";
 import SignUpDialog from "@/features/auth/components/AuthDialog/SignUpDialog";
 import { useAuthDialog } from "@/context/AuthDialogContext";
-import { useState } from "react";
-import AppSnackbar from "@/app/components/Snackbar/AppSnackbar";
+import { useSnackbar } from "@/context/SnackbarContext";
 
 export default function AuthDialogs() {
     const {
@@ -13,15 +12,14 @@ export default function AuthDialogs() {
         openSignUp,
         closeAuthDialog,
     } = useAuthDialog();
-
-    const [successMessage, setSuccessMessage] = useState("");
+    const { showSnackbar } = useSnackbar();
 
     function handleSignUpSuccess() {
-        setSuccessMessage("Account created successfully!");
+        showSnackbar("Account created successfully!", "success");
         openLogin();
     }
     function handleLoginSuccess() {
-        setSuccessMessage("Logged in successfully!");
+        showSnackbar("Logged in successfully!", "success");
     }
 
   return (
@@ -39,13 +37,6 @@ export default function AuthDialogs() {
         onLoginClick={openLogin}
         onSignUpSuccess={handleSignUpSuccess}
       />
-
-      <AppSnackbar
-                open={Boolean(successMessage)}
-                message={successMessage}
-                severity="success"
-                onClose={() => setSuccessMessage("")}
-            />
     </>
   );
 }

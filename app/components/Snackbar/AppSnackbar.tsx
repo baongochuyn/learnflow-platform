@@ -7,10 +7,7 @@ export default function AppSnackbar({ open, message, onClose, severity }: { open
             autoHideDuration={4000}
             onClose={onClose}
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              sx={{
-                top: "80px !important",
-                right: "24px",
-            }}
+            sx={{ bottom: { xs: 16, sm: 24, }, right: { xs: 16, sm: 24, }, }}
             >
             <Alert
         onClose={onClose}
@@ -28,7 +25,6 @@ export default function AppSnackbar({ open, message, onClose, severity }: { open
           backdropFilter: "blur(12px)",
           border: "1px solid rgba(255, 255, 255, 0.1)",
           boxShadow: "0 20px 30px -10px rgba(0, 0, 0, 0.5)",
-          
         }}
       >
         {message}

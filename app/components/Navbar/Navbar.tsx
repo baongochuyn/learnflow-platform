@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AppBar, Box, Button, Stack, Toolbar, Typography, IconButton, AlertColor } from "@mui/material";
+import { AppBar, Box, Button, Stack, Toolbar, Typography } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 
 import { useAuthDialog } from "@/context/AuthDialogContext";
