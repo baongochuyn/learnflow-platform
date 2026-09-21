@@ -2,58 +2,132 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AppBar, Box, Button, Stack, Toolbar, Typography } from "@mui/material";
+import LoginIcon from "@mui/icons-material/Login";
 
+import { useAuthDialog } from "@/context/AuthDialogContext";
+import AuthDialogs from "@/features/auth/components/AuthDialog/AuthDialog";
 
 export default function Navbar() {
+    const { openLogin } = useAuthDialog();
     const pathname = usePathname();
-
     const navItems = [
         { name: "Home", href: "/" },
         { name: "Courses", href: "/courses" },
         { name: "Schedule", href: "/schedule" },
         { name: "Tasks", href: "/tasks" },
     ];
-  return (
-    <nav className="bg-gray-800 text-white p-4 sticky top-0 z-50 w-full ">
-      <div className="container mx-auto flex justify-between items-center">
 
-        {/* Logo with Gradient & Glow effect */}
-        <Link 
-          href="/" 
-          className="group relative text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200 bg-clip-text text-transparent transition-all hover:scale-105"
-        >
-          Learn<span className="text-indigo-400">Flow</span>
-          <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-gradient-to-r from-amber-400 to-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+  return (
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{
+        bgcolor: "rgba(15, 23, 42, 0.9)",
+        backdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(148, 163, 184, 0.15)",
+      }}
+    >
+      <Toolbar sx={{ maxWidth: 1200, width: "100%", mx: "auto", minHeight: 72 }}>
+        <Link href="/" style={{ textDecoration: "none" }}>
+          <Button
+            sx={{
+              p: 0,
+              minWidth: 0,
+              color: "#f59e0b",
+              fontWeight: 900,
+              letterSpacing: 1.2,
+              textTransform: "none",
+              fontSize: "1.7rem",
+              "&:hover": { color: "#fbbf24" },
+            }}
+          >
+            <Typography
+              component="span"
+              sx={{
+                background: "linear-gradient(135deg, #fbbf24 0%, #fb923c 50%, #fef3c7 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                fontWeight: 900,
+              }}
+            >
+              Learn
+            </Typography>
+            <Typography component="span" sx={{ color: "#a5b4fc", fontWeight: 900 }}>
+              Flow
+            </Typography>
+          </Button>
         </Link>
 
-        {/* Navigation Links */}
-        <div className="flex items-center space-x-1 sm:space-x-2">
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Stack direction="row" spacing={1}>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
 
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`relative px-4 py-2 text-sm font-medium transition-colors group ${
-                  isActive ? "text-amber-400 font-semibold" : "text-gray-300 hover:text-white"
-                }`}
-              >
-                {item.name}
-
-                {/*  Active Mode */}
-                <span
-                  className={`absolute inset-x-2 -bottom-1 h-[2px] rounded-full bg-amber-400 transition-transform duration-300 ${
-                    isActive 
-                      ? "scale-x-100" 
-                      : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
+              <Link key={item.href} href={item.href} style={{ textDecoration: "none" }}>
+                <Button
+                  sx={{
+                    position: "relative",
+                    color: isActive ? "#fbbf24" : "#cbd5e1",
+                    fontWeight: isActive ? 700 : 500,
+                    px: 1.5,
+                    py: 0.75,
+                    minWidth: 0,
+                    textTransform: "none",
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      left: 12,
+                      right: 12,
+                      bottom: 6,
+                      height: 2,
+                      borderRadius: 999,
+                      backgroundColor: "#f59e0b",
+                      transform: isActive ? "scaleX(1)" : "scaleX(0)",
+                      transformOrigin: "center",
+                      transition: "transform 0.2s ease",
+                    },
+                    "&:hover::after": {
+                      transform: "scaleX(1)",
+                    },
+                  }}
+                >
+                  {item.name}
+                </Button>
               </Link>
             );
           })}
-        </div>
-      </div>
-    </nav>
+
+          {/* Button Sign In - Đồng bộ font-size và kích thước */}
+          <Button
+            startIcon={<LoginIcon sx={{ fontSize: "1.1rem !important" }} />}
+            onClick={() => openLogin()}
+            sx={{
+              ml: 1,
+              color: "#f8fafc",
+              fontWeight: 600,
+              fontSize: "0.875rem", // Khớp 100% với các Nav Item
+              textTransform: "none",
+              px: 2,
+              py: 0.75,
+              borderRadius: 2,
+              bgcolor: "rgba(255, 255, 255, 0.05)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                bgcolor: "rgba(245, 158, 11, 0.15)",
+                borderColor: "rgba(245, 158, 11, 0.4)",
+                color: "#fbbf24",
+              },
+            }}
+          >
+            Log In
+          </Button>
+        </Stack>
+        <AuthDialogs />
+      </Toolbar>
+    </AppBar>
   );
 }

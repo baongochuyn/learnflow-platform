@@ -1,107 +1,180 @@
 "use client";
+
 import Link from "next/link";
+import { Box, Button, Container, Stack, Typography, Chip } from "@mui/material";
+
 import FeatureCard from "./components/FeatureCard/FeatureCard";
-import { useCourses } from "@/hooks/useCourses";
 import CourseList from "@/features/courses/components/CourseList/CourseList";
-import StatsSection from "./components/StatsSection/StatsSection";
+import { useCourses } from "@/hooks/useCourses";
 import CategorySection from "./components/CategorySection/CategorySection";
 
 export default function Home() {
   const { featuredCourses } = useCourses();
 
-
   return (
-    <div>
-        {/* Hero Section */}
-      <section className="relative min-h-[520px] flex items-center justify-center overflow-hidden bg-slate-950">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-amber-500/20 via-indigo-500/20 to-purple-500/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+    <Box sx={{ minHeight: "100vh", bgcolor: "#020617", color: "#f8fafc" }}>
+      {/* ===== HERO SECTION ===== */}
+      <Box
+        sx={{
+          position: "relative",
+          minHeight: { xs: 480, md: 580 },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+        }}
+      >
+        {/* Ambient Glows (Đốm sáng Cyberpunk/Vibrant Dark) */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: "20%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: { xs: 300, md: 600 },
+            height: { xs: 150, md: 280 },
+            background: "radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(99, 102, 241, 0.12) 50%, transparent 80%)",
+            filter: "blur(90px)",
+            pointerEvents: "none",
+          }}
+        />
 
-        {/* Content of Hero Section */}
-        <div className="relative z-10 max-w-4xl mx-auto text-center px-6 space-y-6">
-          <span className="px-3.5 py-1.5 text-xs font-bold tracking-wider text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-full inline-block">
-            LEARN & PLAN SMARTER
-          </span>
+        {/* Tech Grid Pattern */}
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px)",
+            backgroundSize: "4rem 4rem",
+            maskImage: "radial-gradient(ellipse 60% 50% at 50% 50%, #000 70%, transparent 100%)",
+            pointerEvents: "none",
+          }}
+        />
 
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
-            Learn better. Plan smarter. <br />
-            <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200 bg-clip-text text-transparent">
-              Stay on track.
-            </span>
-          </h1>
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1, py: { xs: 6, md: 10 } }}>
+          <Stack spacing={3} sx={{ alignItems: "center", textAlign: "center" }}>
+            {/* Pill Tag */}
+            <Chip
+              label="LEARN & PLAN SMARTER"
+              size="small"
+              sx={{
+                bgcolor: "rgba(245, 158, 11, 0.1)",
+                color: "#f59e0b",
+                border: "1px solid rgba(245, 158, 11, 0.2)",
+                fontWeight: 700,
+                letterSpacing: 1.2,
+                px: 1,
+              }}
+            />
 
-          <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto">
-            Discover courses, manage your schedule, organize your tasks, and make learning more effective.
-          </p>
-
-          <div className="pt-2">
-            <Link 
-              href="/courses" 
-              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-amber-500/25 hover:scale-105 inline-block"
+            {/* Title  Gradient Text */}
+            <Typography
+              variant="h1"
+              sx={{
+                maxWidth: 820,
+                fontSize: { xs: "2.2rem", sm: "3.2rem", md: "4rem" },
+                fontWeight: 900,
+                lineHeight: 1.15,
+                letterSpacing: "-0.02em",
+              }}
             >
-              Explore Courses
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <div className="bg-slate-950 px-6 py-12">
-        <div className="mx-auto max-w-7xl space-y-20">
-          
-          {/* 1. Feature Cards Section */}
-          <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <FeatureCard title="Courses" description="Discover and explore courses that match your learning goals." href="/courses" />
-            <FeatureCard title="Schedule" description="Plan and manage your study schedule effectively." href="/schedule" />
-            <FeatureCard title="Tasks" description="Organize your learning tasks and keep track of your progress." href="/tasks" />
-          </section>
-
-          {/* 2. Stats Section */}
-          <section>
-            <StatsSection />
-          </section>
-
-          {/* 3. Featured Courses + Categories */}
-          <section className="space-y-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800/80 pb-6">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold text-white">Featured Courses</h2>
-                <p className="text-slate-400 mt-1">Start learning from industry experts</p>
-              </div>
-              <Link href="/courses" className="text-amber-400 hover:text-amber-300 font-medium text-sm flex items-center gap-1">
-                View all courses →
-              </Link>
-            </div>
-
-            {/* Category Pills */}
-            <CategorySection />
-
-            {/* Course List */}
-            <div>
-              <CourseList courses={featuredCourses} />
-            </div>
-          </section>
-
-          {/* 4. Call to Action Section */}
-          <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-slate-900 border border-slate-800 p-8 md:p-12 text-center">
-            <h2 className="text-2xl md:text-4xl font-extrabold text-white">
-              Ready to level up your learning workflow?
-            </h2>
-            <p className="text-slate-400 mt-3 max-w-xl mx-auto text-sm md:text-base">
-              Join thousands of learners who organize their study habits and achieve their career goals faster.
-            </p>
-            <div className="mt-6 flex justify-center gap-4">
-              <Link
-                href="/courses"
-                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-amber-500/20"
+              Learn better. Plan smarter.{" "}
+              <Box
+                component="span"
+                sx={{
+                  background: "linear-gradient(90deg, #f59e0b 0%, #fb923c 50%, #fde047 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
               >
-                Get Started for Free
+                Stay on track.
+              </Box>
+            </Typography>
+
+            <Typography variant="body1" sx={{ maxWidth: 650, color: "#94a3b8", fontSize: { xs: "1rem", md: "1.125rem" } }}>
+              Discover courses, manage your schedule, organize your tasks, and make learning more effective.
+            </Typography>
+
+            <Box sx={{ pt: 1 }}>
+              <Link href="/courses" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  sx={{
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: 3,
+                    fontWeight: 800,
+                    boxShadow: "0 10px 25px -5px rgba(245, 158, 11, 0.3)",
+                    transition: "all 0.2s",
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 15px 30px -5px rgba(245, 158, 11, 0.4)",
+                    },
+                  }}
+                >
+                  Explore Courses
+                </Button>
               </Link>
-            </div>
-          </section>
-        </div>
-      </div>
+            </Box>
+          </Stack>
+        </Container>
+      </Box>
 
+      {/* ===== MAIN CONTENT SECTION ===== */}
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" },
+            gap: 3,
+            mb: 10,
+          }}
+        >
+          <FeatureCard title="Courses" description="Discover and explore courses that match your learning goals." href="/courses" />
+          <FeatureCard title="Schedule" description="Plan and manage your study schedule effectively." href="/schedule" />
+          <FeatureCard title="Tasks" description="Organize your learning tasks and keep track of your progress." href="/tasks" />
+        </Box>
 
-    </div>
+        <Box>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+            sx={{
+              mb: 4,
+              justifyContent: "space-between",
+              alignItems: { xs: "flex-start", sm: "flex-end" },
+              pb: 2,
+              borderBottom: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            <Box>
+              <Typography variant="h4" component="h2" sx={{ fontWeight: 800, letterSpacing: "-0.01em" }}>
+                Featured Courses
+              </Typography>
+              <Typography variant="body2" sx={{ color: "#94a3b8", mt: 0.5 }}>
+                Start learning from industry experts
+              </Typography>
+            </Box>
+
+            <Link href="/courses" style={{ textDecoration: "none" }}>
+              <Button color="primary" sx={{ fontWeight: 700, "&:hover": { background: "transparent", textDecoration: "underline" } }}>
+                View all courses →
+              </Button>
+            </Link>
+          </Stack>
+
+          {/* ===== CATEGORY SECTION ===== */}
+          <Box sx={{ mb: 5 }}>
+            <CategorySection /> 
+          </Box>
+
+          <CourseList courses={featuredCourses} />
+        </Box>
+      </Container>
+    </Box>
   );
 }

@@ -1,32 +1,53 @@
-import type { CourseLevel } from "@/data/courses";
+import { Box, MenuItem, TextField } from "@mui/material";
+import type { CourseLevel } from "@/types/courses";
 
 type CourseFiltersProps = {
-    search : string;
-    level : CourseLevel | "";
-    onSearchChange : (search: string) => void;
-    onLevelChange : (level: CourseLevel | "") => void;
+  search: string;
+  level: CourseLevel | "";
+  onSearchChange: (search: string) => void;
+  onLevelChange: (level: CourseLevel | "") => void;
 };
 
 export default function CourseFilters({ search, level, onSearchChange, onLevelChange }: CourseFiltersProps) {
-    
-    return (
-    <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <input
-            className="flex-1 h-10 rounded-md border border-slate-700 bg-slate-900 px-4 py-2 text-white focus:border-blue-500 focus:ring focus:ring-blue-500/20"
-            type="text"
-            placeholder="Search courses..."
-            value={search}
-            onChange={(e) => onSearchChange(e.target.value)}
-        />
-        <select 
-            className="flex-1 md:flex-row h-10 rounded-md border border-slate-700 bg-slate-900 px-4 py-2 text-white focus:border-blue-500 focus:ring focus:ring-blue-500/20"
-            value={level}
-            onChange={(e) => onLevelChange(e.target.value as CourseLevel | "")}
-        >
-            <option value="">All Levels</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-        </select>
-    </div>)
+  return (
+    <Box sx={{ mb: 4, display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2 }}>
+      <TextField
+        fullWidth
+        value={search}
+        onChange={(e) => onSearchChange(e.target.value)}
+        placeholder="Search courses..."
+        variant="outlined"
+        size="small"
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            bgcolor: "rgba(15, 23, 42, 0.8)",
+            color: "#f8fafc",
+            borderRadius: 2,
+          },
+          "& .MuiInputBase-input::placeholder": { color: "#94a3b8" },
+        }}
+      />
+
+      <TextField
+        select
+        value={level}
+        onChange={(e) => onLevelChange(e.target.value as CourseLevel | "")}
+        variant="outlined"
+        size="small"
+        sx={{
+          minWidth: { xs: "100%", md: 220 },
+          "& .MuiOutlinedInput-root": {
+            bgcolor: "rgba(15, 23, 42, 0.8)",
+            color: "#f8fafc",
+            borderRadius: 2,
+          },
+        }}
+      >
+        <MenuItem value="">All Levels</MenuItem>
+        <MenuItem value="Beginner">Beginner</MenuItem>
+        <MenuItem value="Intermediate">Intermediate</MenuItem>
+        <MenuItem value="Advanced">Advanced</MenuItem>
+      </TextField>
+    </Box>
+  );
 }

@@ -1,60 +1,51 @@
 "use client";
+
 import { useState } from "react";
+import { Box, Container, Typography } from "@mui/material";
 
-import {courses} from "@/data/courses";
+import { courses } from "@/data/courses";
 import type { CourseLevel } from "@/types/courses";
-
 import CourseFilters from "@/features/courses/components/CourseFilters/CourseFilters";
 import CourseList from "@/features/courses/components/CourseList/CourseList";
 
+export default function CoursesPage() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState<CourseLevel | "">("");
 
-export default function CoursesPage(){
-    const [searchTerm, setSearchTerm] = useState("");
-    const [selectedLevel, setSelectedLevel] = useState<CourseLevel | "">("");
+  const filteredCourses = courses.filter((course) => {
+    const matchesSearchTerm = course.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLevel = selectedLevel === "" || course.level === selectedLevel;
 
-    const filteredCourses = courses.filter((course) => {
-        const matchesSearchTerm = course.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesLevel = selectedLevel === "" || course.level === selectedLevel;
+    return matchesSearchTerm && matchesLevel;
+  });
 
-        return matchesSearchTerm && matchesLevel;
-    });
+  const courseCount = filteredCourses.length;
 
-    function handleSearchChange(search: string) {
-        setSearchTerm(search);
-    }
+  return (
+    <Box sx={{ minHeight: "100vh", bgcolor: "#020817", color: "#f8fafc", py: { xs: 6, md: 8 } }}>
+      <Container maxWidth="lg">
+        <Box sx={{ textAlign: "center", mb: 4 }}>
+          <Typography variant="h3" sx={{ fontWeight: 800 }}>
+            Explore courses
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+            Learn new skills with online and offline courses.
+          </Typography>
+        </Box>
 
-    function handleLevelChange(level: CourseLevel | "") {
-        setSelectedLevel(level);
-    }
+        <CourseFilters
+          search={searchTerm}
+          level={selectedLevel}
+          onSearchChange={setSearchTerm}
+          onLevelChange={setSelectedLevel}
+        />
 
-    const courseCount = filteredCourses.length;
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+          {courseCount} course{courseCount !== 1 ? "s" : ""} found.
+        </Typography>
 
-    return (
-        <div className="min-h-screen bg-slate-950 px-6 py-10">
-            <div className="mx-auto max-w-7xl">
-                <header>
-                    <h1 className=" text-center text-3xl font-bold text-white">
-                        Explore courses
-                    </h1>
-
-                    <p className="text-center mt-2 text-slate-400 mb-6">
-                        Learn new skills with online and offline courses.
-                    </p>
-                </header>
-            
-                <CourseFilters
-                    search={searchTerm}
-                    level={selectedLevel}
-                    onSearchChange={handleSearchChange}
-                    onLevelChange={handleLevelChange}
-                />
-
-                <p className="mb-4 text-sm text-slate-400">
-                    {courseCount} course{courseCount !== 1 ? "s" : ""} found.
-                </p>
-                <CourseList courses={filteredCourses} />
-            </div>
-        </div>
-    
-    );
+        <CourseList courses={filteredCourses} />
+      </Container>
+    </Box>
+  );
 }

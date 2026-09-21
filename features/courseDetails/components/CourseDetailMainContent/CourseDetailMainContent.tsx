@@ -1,57 +1,76 @@
+import { Box, Typography } from "@mui/material";
 import type { Course } from "@/types/courses";
 
 export default function CourseDetailMainContent({ course }: { course: Course }) {
-    return (
-        <div className="bg-slate-950 px-6 py-10">
-            <div className="mt-4">
-                <h3 className="text-xl font-semibold text-white">What you'll learn?</h3>
-                <ul className="mt-2 list-disc list-inside text-slate-400">
-                    {course.learningOutcomes.map((outcome, index) => (
-                        <li key={index}>{outcome}</li>
-                    ))}
-                </ul>
-            </div>
+  return (
+    <Box>
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1.5 }}>
+          What you&apos;ll learn?
+        </Typography>
+        <Box component="ul" sx={{ m: 0, pl: 3, color: "text.secondary", lineHeight: 1.9 }}>
+          {course.learningOutcomes.map((outcome, index) => (
+            <Box component="li" key={index}>{outcome}</Box>
+          ))}
+        </Box>
+      </Box>
 
-            <div className="mt-4">
-                <h3 className="text-xl font-semibold text-white">Learning Format</h3>
-                <p className="mt-2 text-slate-400">{course.learningFormat}</p>
-            </div>
-            {
-                course.learningFormat === "Video" && (
-                    <div className="mt-4">
-                        <h3 className="text-xl font-semibold text-white">Self-paced Learning</h3>
-                    </div>
-                )
-            }
-            {(course.learningFormat === "Offline" ||
-                course.learningFormat === "Live") && (
-                <div className="mt-4">
-                    <h3 className="text-xl font-semibold text-white">Schedule</h3>
-                    <ul className="mt-2 list-disc list-inside text-slate-400">
-                        {course.schedule.map((item, index) => (
-                            <li key={index}>{item.day}: {item.time}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-            {course.learningFormat === "Offline" && course.location && (
-                <div className="mt-4">
-                    <h3 className="text-xl font-semibold text-white">Location</h3>
-                    <p className="mt-2 text-slate-400">{course.location}</p>
-                </div>
-            )}
-            <div className="mt-4">
-                <h3 className="text-xl font-semibold text-white">Learning Path</h3>
-                <p className="mt-2 text-slate-400">{course.learningPath}</p>
-            </div>
-            <div className="mt-4">
-                <h3 className="text-xl font-semibold text-white">Who this course is for?</h3>
-                <ul className="mt-2 list-disc list-inside text-slate-400">
-                    {course.targetAudience.map((audience, index) => (
-                        <li key={index}>{audience}</li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    );
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+          Learning Format
+        </Typography>
+        <Typography color="text.secondary">{course.learningFormat}</Typography>
+      </Box>
+
+      {course.learningFormat === "Video" && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+            Self-paced Learning
+          </Typography>
+        </Box>
+      )}
+
+      {(course.learningFormat === "Offline" || course.learningFormat === "Live") && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+            Schedule
+          </Typography>
+          <Box component="ul" sx={{ m: 0, pl: 3, color: "text.secondary", lineHeight: 1.9 }}>
+            {course.schedule.map((item, index) => (
+              <Box component="li" key={index}>
+                {item.day}: {item.time}
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      )}
+
+      {course.learningFormat === "Offline" && course.location && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+            Location
+          </Typography>
+          <Typography color="text.secondary">{course.location}</Typography>
+        </Box>
+      )}
+
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+          Learning Path
+        </Typography>
+        <Typography color="text.secondary">{course.learningPath}</Typography>
+      </Box>
+
+      <Box>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+          Who this course is for?
+        </Typography>
+        <Box component="ul" sx={{ m: 0, pl: 3, color: "text.secondary", lineHeight: 1.9 }}>
+          {course.targetAudience.map((audience, index) => (
+            <Box component="li" key={index}>{audience}</Box>
+          ))}
+        </Box>
+      </Box>
+    </Box>
+  );
 }

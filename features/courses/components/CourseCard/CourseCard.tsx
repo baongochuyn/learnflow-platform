@@ -1,87 +1,117 @@
-import type {Course} from "@/types/courses";
-import {
-  FaStar,
-  FaUsers,
-  FaClock,
-} from "react-icons/fa";
-
+import type { Course } from "@/types/courses";
+import { useRouter } from "next/navigation";
+import { Box, Button, Card, CardContent, Chip, Divider, Typography } from "@mui/material";
+import { AccessTime, People, Star } from "@mui/icons-material";
 
 type CourseCardProps = {
-    course: Course;
+  course: Course;
 };
 
 export default function CourseCard({ course }: CourseCardProps) {
+  const router = useRouter();
+
   return (
-    <article className="overflow-hidden rounded-xl border border-slate-700 bg-slate-900 text-white shadow-lg">
-        <div className="relative">
-            <img
-            src={course.imageUrl}
-            alt={course.title}
-            className="h-48 w-full object-cover"
-            />
+    <Card
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        border: "1px solid rgba(148, 163, 184, 0.2)",
+        bgcolor: "rgba(15, 23, 42, 0.9)",
+        boxShadow: "0 12px 30px rgba(15, 23, 42, 0.2)",
+      }}
+    >
+      <Box sx={{ position: "relative" }}>
+        <Box
+          component="img"
+          src={course.imageUrl}
+          alt={course.title}
+          sx={{ width: "100%", height: 200, objectFit: "cover" }}
+        />
 
-        <span className="absolute bottom-3 left-3 rounded-md bg-slate-900/90 px-3 py-1 text-sm font-medium text-white backdrop-blur-sm">
-        {course.level}
-        </span>
+        <Chip
+          label={course.level}
+          size="small"
+          sx={{
+            position: "absolute",
+            left: 12,
+            bottom: 12,
+            bgcolor: "rgba(15, 23, 42, 0.9)",
+            color: "#f8fafc",
+            fontWeight: 700,
+          }}
+        />
 
-        <span className="absolute bottom-3 right-3 rounded-md bg-slate-900/90 px-3 py-1 text-sm font-semibold text-white backdrop-blur-sm">
-        €{course.price}
-        </span>
-    </div>
+        <Chip
+          label={`€${course.price}`}
+          size="small"
+          sx={{
+            position: "absolute",
+            right: 12,
+            bottom: 12,
+            bgcolor: "rgba(15, 23, 42, 0.9)",
+            color: "#fbbf24",
+            fontWeight: 800,
+          }}
+        />
+      </Box>
 
-    <div className="p-5">
-        <span className="text-sm font-medium text-blue-400">
-        {course.category}
-        </span>
+      <CardContent sx={{ flexGrow: 1, p: 2.5 }}>
+        <Typography variant="caption" sx={{ color: "#60a5fa", fontWeight: 700 }}>
+          {course.category}
+        </Typography>
 
-        <h2 className="mt-2 text-xl font-semibold text-white">
-        {course.title}
-        </h2>
+        <Typography variant="h6" component="h2" sx={{ mt: 1.5, mb: 1, color: "#f8fafc", fontWeight: 700 }}>
+          {course.title}
+        </Typography>
 
-        <p className="mt-2 text-sm text-slate-400">
-        {course.description}
-        </p>
+        <Typography variant="body2" color="text.secondary">
+          {course.description}
+        </Typography>
 
-        <div className="mt-4">
-        <p className="font-medium text-white">
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="subtitle2" sx={{ color: "#f8fafc", fontWeight: 700 }}>
             {course.instructor.name}
-        </p>
-
-        <p className="text-sm text-slate-400">
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
             {course.instructor.jobTitle}
-        </p>
-        </div>
+          </Typography>
+        </Box>
 
-        <div className="mt-5 flex items-center justify-between border-t border-slate-700 pt-4">
-            {/* Course stats */}
-            <div className="flex items-center gap-4 text-sm text-slate-400">
-                <span className="flex items-center gap-1.5">
-                <FaStar className="text-yellow-400" />
-                {course.rating}
-                </span>
+        <Divider sx={{ my: 2, borderColor: "rgba(148, 163, 184, 0.2)" }} />
 
-                <span className="flex items-center gap-1.5">
-                <FaUsers />
-                {course.studentCount}
-                </span>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, color: "text.secondary", fontSize: 13, flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+              <Star fontSize="small" sx={{ color: "#fbbf24" }} />
+              <span>{course.rating}</span>
+            </Box>
 
-                <span className="flex items-center gap-1.5">
-                <FaClock />
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+              <People fontSize="small" />
+              <span>{course.studentCount}</span>
+            </Box>
+
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+              <AccessTime fontSize="small" />
+              <span>
                 {course.duration.value}
                 {course.duration.unit === "hours" ? "h" : "d"}
-                </span>
-            </div>
+              </span>
+            </Box>
+          </Box>
 
-            {/* Detail button */}
-            <button
-                type="button"
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500"
-                onClick={() => window.location.href = `/courses/${course.id}`}
-            >
-                Details
-            </button>
-        </div>
-    </div>
-    </article>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => router.push(`/courses/${course.id}`)}
+            sx={{ minWidth: 90 }}
+          >
+            Details
+          </Button>
+        </Box>
+      </CardContent>
+    </Card>
   );
 }
