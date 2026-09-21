@@ -1,5 +1,9 @@
+export type EnrollmentStatus = "active" | "completed" | "cancelled";
+
 export type Enrollment = {
-    courseId: number;
-    userId: number;
-    enrollmentDate: Date;
-}
+  id: number;
+  userId: number;
+  courseId: number;
+  enrolledAt: string;
+  status: EnrollmentStatus;
+};

@@ -8,34 +8,39 @@ import type { Course } from "@/types/courses";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthDialog } from "@/context/AuthDialogContext";
 import { useSnackbar } from "@/context/SnackbarContext";
+import { useEnrollments } from "@/hooks/useEnrollments";
 
 import DialogCustom from "@/app/components/DialogCustom";
+//import { enrollments } from "@/data/enrollments";
 
 export default function EnrollmentSection({ course }: { course: Course }) {
-    const { isLoggedIn } = useAuth();
-    const [isEnrolled, setIsEnrolled] = useState(false);
-  
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
-    const [pendingEnrollment, setPendingEnrollment] = useState(false);
     const { currentUser } = useAuth();
     const { openLogin } = useAuthDialog();
     const { showSnackbar } = useSnackbar();
 
+    const { isEnrolled, enroll } = useEnrollments(course.id);
+
     const handleEnrollClick = () => {
         if (!currentUser) {
-            setPendingEnrollment(true);
             openLogin();
             return;
         }
         setConfirmationOpen(true);
     };
 
-    const handleConfirmEnrollment = () => {
-        // TODO: Handle the enrollment logic here
+    const handleConfirmEnrollment = async () => {
+        const result = await enroll();
+
+        if (!result.success) {
+            showSnackbar(result.message, "error");
+            return;
+        }
+
+        //console.log(enrollments);
         setConfirmationOpen(false);
-        setIsEnrolled(true);
-        showSnackbar("Enrollment successful!", "success");
+        showSnackbar(result.message, "success");
     };
 
     return (

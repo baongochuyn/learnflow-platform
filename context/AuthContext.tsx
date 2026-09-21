@@ -5,13 +5,14 @@ import type { LoginResult } from "@/types/auth";
 import { validateLogin, validateSignUp } from "@/validators/authValidator";
 import {users} from "@/data/users";
 import type { StudentSignUpFormData, TeacherSignUpFormData } from "@/types/auth";
+import type { User } from "@/types/users";
 
 type AuthContextType = {
   isLoggedIn: boolean;
   login: (username: string, password: string) => Promise<LoginResult>;
   logout: () => void;
-  currentUser: string | null;
-  setCurrentUser: (user: string | null) => void;
+  currentUser: User | null;
+  setCurrentUser: (user: User | null) => void;
   StudentSignUp: (student: StudentSignUpFormData) => Promise<LoginResult>;
   TeacherSignUp: (teacher: TeacherSignUpFormData) => Promise<LoginResult>;
 };
@@ -20,7 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Default: chưa đăng nhập
-  const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   async function StudentSignUp(user: StudentSignUpFormData): Promise<LoginResult> {
     const validationError = validateSignUp(user.username, user.email, user.password, user.confirmPassword);
@@ -55,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const user = users.find((user) => user.username === username && user.password === password);
     if (user) {
       setIsLoggedIn(true);
-      setCurrentUser(user.username);
+      setCurrentUser(user);
       return { success: true } as LoginResult;
     } else {
       return { success: false, message: "Invalid username or password" };
