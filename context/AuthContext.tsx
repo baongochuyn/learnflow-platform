@@ -8,7 +8,6 @@ import type { StudentSignUpFormData, TeacherSignUpFormData } from "@/types/auth"
 import type { User } from "@/types/users";
 
 type AuthContextType = {
-  isLoggedIn: boolean;
   login: (username: string, password: string) => Promise<LoginResult>;
   logout: () => void;
   currentUser: User | null;
@@ -55,7 +54,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // find the user in the users array
     const user = users.find((user) => user.username === username && user.password === password);
     if (user) {
-      setIsLoggedIn(true);
       setCurrentUser(user);
       return { success: true } as LoginResult;
     } else {
@@ -63,11 +61,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const logout = () => setIsLoggedIn(false);
+  function logout() {
+     setCurrentUser(null);
+    };
 
   return (
     <AuthContext.Provider value={{ 
-      isLoggedIn,
       currentUser,
       login, 
       logout, 
