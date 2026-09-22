@@ -1,6 +1,9 @@
 
 import { useState } from "react";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, IconButton, InputAdornment } from "@mui/material";
+import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
+import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
+
 import { validateUsername, validatePassword, validateEmail } from "@/validators/authValidator";
 import { StudentSignUpFormData } from "@/types/auth";
 
@@ -10,6 +13,8 @@ export default function StudentSignUpForm({ onStudentSignUp}: { onStudentSignUp:
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const [usernameError, setUsernameError] = useState<string | null>(null);
     const [emailError, setEmailError] = useState<string | null>(null);
@@ -75,18 +80,59 @@ export default function StudentSignUpForm({ onStudentSignUp}: { onStudentSignUp:
                 onChange={(e) => handleEmailChange(e.target.value)}
                 />
             <TextField
-                label="Password" type="password" placeholder="Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
+                label="Password" placeholder="Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
                 value={password}
                 error={!!passwordError}
                 helperText={passwordError}
                 onChange={(e) => handlePasswordChange(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                            <IconButton
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                edge="end"
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? (
+                                <VisibilityOffRoundedIcon />
+                                ) : (
+                                <VisibilityRoundedIcon />
+                                )}
+                            </IconButton>
+                            </InputAdornment>
+                        ),
+                    },
+                }}
             />
             <TextField
-                label="Confirm Password" type="password" placeholder="Confirm Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
+                label="Confirm Password" 
+                 placeholder="Confirm Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
                 value={confirmPassword}
                 error={!!confirmPasswordError}
                 helperText={confirmPasswordError}
                 onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+                type={showConfirmPassword ? "text" : "password"}
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                            <IconButton
+                                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                                edge="end"
+                                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                            >
+                                {showConfirmPassword ? (
+                                <VisibilityOffRoundedIcon />
+                                ) : (
+                                <VisibilityRoundedIcon />
+                                )}
+                            </IconButton>
+                            </InputAdornment>
+                        ),
+                        },
+                }}
             />
 
             <Button onClick={handleSignUp} variant="contained" sx={{ width: "100%" }}

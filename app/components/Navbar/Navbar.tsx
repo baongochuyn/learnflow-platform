@@ -7,8 +7,12 @@ import LoginIcon from "@mui/icons-material/Login";
 
 import { useAuthDialog } from "@/context/AuthDialogContext";
 import AuthDialogs from "@/features/auth/components/AuthDialog/AuthDialog";
+import { useAuth } from "@/context/AuthContext";
 
+import UserMenu from "@/features/auth/components/AuthDialog/UserMenu/UserMenu";
 export default function Navbar() {
+    const { currentUser } = useAuth();
+
     const { openLogin } = useAuthDialog();
     const pathname = usePathname();
     const navItems = [
@@ -100,33 +104,38 @@ export default function Navbar() {
             );
           })}
 
-          {/* Button Sign In - Đồng bộ font-size và kích thước */}
-          <Button
-            startIcon={<LoginIcon sx={{ fontSize: "1.1rem !important" }} />}
-            onClick={() => openLogin()}
-            sx={{
-              ml: 1,
-              color: "#f8fafc",
-              fontWeight: 600,
-              fontSize: "0.875rem", // Khớp 100% với các Nav Item
-              textTransform: "none",
-              px: 2,
-              py: 0.75,
-              borderRadius: 2,
-              bgcolor: "rgba(255, 255, 255, 0.05)",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                bgcolor: "rgba(245, 158, 11, 0.15)",
-                borderColor: "rgba(245, 158, 11, 0.4)",
-                color: "#fbbf24",
-              },
-            }}
-          >
-            Log In
-          </Button>
+          { currentUser ? (
+            <UserMenu />
+          ) : (
+            <div>
+                <Button
+                startIcon={<LoginIcon sx={{ fontSize: "1.1rem !important" }} />}
+                onClick={() => openLogin()}
+                sx={{
+                ml: 1,
+                color: "#f8fafc",
+                fontWeight: 600,
+                fontSize: "0.875rem", // Khớp 100% với các Nav Item
+                textTransform: "none",
+                px: 2,
+                py: 0.75,
+                borderRadius: 2,
+                bgcolor: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                    bgcolor: "rgba(245, 158, 11, 0.15)",
+                    borderColor: "rgba(245, 158, 11, 0.4)",
+                    color: "#fbbf24",
+                },
+                }}
+            >
+                Log In
+            </Button>
+            <AuthDialogs />
+        </div>
+        )}
         </Stack>
-        <AuthDialogs />
       </Toolbar>
     </AppBar>
   );

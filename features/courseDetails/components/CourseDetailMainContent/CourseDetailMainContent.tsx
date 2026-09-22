@@ -5,7 +5,7 @@ export default function CourseDetailMainContent({ course }: { course: Course }) 
   return (
     <Box>
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1.5 }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
           What you&apos;ll learn?
         </Typography>
         <Box component="ul" sx={{ m: 0, pl: 3, color: "text.secondary", lineHeight: 1.9 }}>
@@ -38,7 +38,7 @@ export default function CourseDetailMainContent({ course }: { course: Course }) 
           <Box component="ul" sx={{ m: 0, pl: 3, color: "text.secondary", lineHeight: 1.9 }}>
             {course.schedule.map((item, index) => (
               <Box component="li" key={index}>
-                {item.day}: {item.time}
+                {item.day}: {item.startTime} - {item.endTime}
               </Box>
             ))}
           </Box>

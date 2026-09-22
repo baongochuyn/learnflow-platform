@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { DialogTitle, DialogContent, TextField, Button, Typography, DialogActions, Link } from "@mui/material";
+import { DialogTitle, DialogContent, TextField, Button, Typography, DialogActions, Link, InputAdornment, IconButton} from "@mui/material";
+import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
+import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
+
 import Dialog from "@mui/material/Dialog";
 import { useAuth } from "@/context/AuthContext";
 
@@ -19,6 +22,7 @@ export default function LoginDialog({
     const [error, setError] = useState<string | null>(null);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     async function handleLogin(){
         const reponse = await login(username, password); 
@@ -65,9 +69,29 @@ export default function LoginDialog({
                 onChange={(e) => setUsername(e.target.value)}
             />
             
-            <TextField label="Password" type="password" placeholder="Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
+            <TextField label="Password"  placeholder="Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                            <IconButton
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                edge="end"
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? (
+                                <VisibilityOffRoundedIcon />
+                                ) : (
+                                <VisibilityRoundedIcon />
+                                )}
+                            </IconButton>
+                            </InputAdornment>
+                        ),
+                    },
+                }}
             />
             
             <Button 
