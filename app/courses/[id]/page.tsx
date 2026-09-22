@@ -9,6 +9,7 @@ import type { Course } from "@/types/courses";
 import CourseDetailHeader from "@/features/courseDetails/components/CourseDetailHeader/CourseDetailHeader";
 import CourseDetailMainContent from "@/features/courseDetails/components/CourseDetailMainContent/CourseDetailMainContent";
 import EnrollmentSection from "@/features/courseDetails/components/EnrollmentSection/EnrollmentSection";
+import InstructorSection from "@/features/courseDetails/components/InstructorSection/InstructorSection";
 
 export default async function CourseDetailsPage({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -86,8 +87,10 @@ export default async function CourseDetailsPage({ params }: { params: { id: stri
           }}
         >
           {/* left column: Main Content */}
-          <CourseDetailMainContent course={course} />
-
+          <Box>
+            <InstructorSection instructor={course.instructor} />
+            <CourseDetailMainContent course={course} />
+          </Box>
           {/* right column: Sticky Card */}
           <Box
             sx={{
