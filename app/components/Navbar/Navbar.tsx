@@ -19,7 +19,7 @@ export default function Navbar() {
         { name: "Home", href: "/" },
         { name: "Courses", href: "/courses" },
         { name: "My Learning", href: "/my-courses" },
-        { name: "Study Planner", href: "/schedule" },
+        { name: "Study Planner", href: "/planner" },
         { name: "Tasks", href: "/tasks" },
     ];
 
