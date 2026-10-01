@@ -6,7 +6,7 @@ export const studyPlans: StudyPlan[] = [
     userId: 1,
     title: "Review TypeScript",
     date: "2026-09-28",
-    startTime: "14:00",
+    startTime: "14:30",
     endTime: "15:00",
   },
   {

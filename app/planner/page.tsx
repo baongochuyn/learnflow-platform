@@ -20,7 +20,7 @@ export default function PlannerPage() {
      <Box sx={{ minHeight: "100vh", bgcolor: "#020817", color: "#f8fafc", py: { xs: 6, md: 8 } }}>
         <Container maxWidth="lg">
             <h1>Study Planner</h1>
-            {plannerItems.length === 0 && (
+            {plannerItems.length !== 0 && (
                 <StudyCalendar plannerItems={plannerItems} />
             )}
 
