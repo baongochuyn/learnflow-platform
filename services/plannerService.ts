@@ -2,6 +2,7 @@ import type { PlannerItem } from "@/types/planner";
 import { courses } from "@/data/courses";
 import { studyPlans } from "@/data/studyPlans";
 import {enrollments} from "@/data/enrollments";
+import type { StudyPlan } from "@/types/studyPlan";
 
 /**
  * Gets all dates between two dates that match a specific day of the week.
@@ -134,4 +135,27 @@ export function getPlannerItems(userId: number): PlannerItem[] {
 
     return a.date.localeCompare(b.date);
   });
+}
+
+/**
+ * Adds a new study plan.
+ * @param studyPlan The study plan to add.
+ * @returns The added study plan.
+ */
+export function addStudyPlan(
+  studyPlan: Omit<StudyPlan, "id">
+): StudyPlan {
+  const newId =
+    studyPlans.length > 0
+      ? Math.max(...studyPlans.map((plan) => plan.id)) + 1
+      : 1;
+
+  const newStudyPlan: StudyPlan = {
+    id: newId,
+    ...studyPlan,
+  };
+
+  studyPlans.push(newStudyPlan);
+
+  return newStudyPlan;
 }

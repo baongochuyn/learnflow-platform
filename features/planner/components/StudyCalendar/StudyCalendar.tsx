@@ -1,12 +1,23 @@
 
 import type { PlannerItem } from "@/types/planner";
 import { useState, useRef, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
+
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import AddIcon from "@mui/icons-material/Add";
 
 import  PlannerCard from "@/features/planner/components/PlannerCard/PlannerCard";
+import AddPlannerDialog from "@/features/planner/components/AddPlannerDialog";
 
 type StudyCalendarProps = {
   plannerItems: PlannerItem[];
+  onAddPlanner: (data: {
+    title: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+  }) => void;
 };
 
 const HOUR_HEIGHT = 100;
@@ -15,7 +26,7 @@ const HEADER_HEIGHT = 70;
 const TIME_COLUMN_WIDTH = 72;
 const MIN_DAY_WIDTH = 120;
 
-export default function StudyCalendar({plannerItems}: StudyCalendarProps) {
+export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalendarProps) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const calendarRef = useRef<HTMLDivElement | null>(null);
 
@@ -150,18 +161,81 @@ export default function StudyCalendar({plannerItems}: StudyCalendarProps) {
         }
     }, []);
 
+    function goToPreviousWeek() {
+        setCurrentDate((prev) => {
+            const date = new Date(prev);
+            date.setDate(date.getDate() - 7);
+
+            return date;
+        });
+    }
+
+    function goToNextWeek() {
+        setCurrentDate((prev) => {
+            const date = new Date(prev);
+            date.setDate(date.getDate() + 7);
+
+            return date;
+        });
+    }
+
+    const [open, setOpen] = useState(false);
+    function handleAddPlannerOpen() {
+        setOpen(true);
+    }
+    function handleAddPlanner(data: {
+        title: string;
+        date: string;
+        startTime: string;
+        endTime: string;
+    }){
+        console.log("New Planner Item:", data);
+        onAddPlanner(data);
+        setOpen(false);
+    }
     return (
-        <Box>
+        <Box sx={{ marginTop: 4, marginBottom: 4, display: "flex", flexDirection: "column", gap: 2 }}>
             {/* Calendar title */}
-            <Typography
-                variant="h5"
+            <Box
                 sx={{
-                    fontWeight: 700,
-                    mb: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    mb: 2,
                 }}
             >
-                Study Calendar
-            </Typography>
+                <Typography
+                    variant="h6"
+                    sx={{
+                        fontWeight: 700,
+                    }}
+                >
+                    {currentDate.toLocaleDateString("en-US", {
+                        month: "long",
+                        year: "numeric",
+                    })}
+                </Typography>
+
+                
+                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                    <Button
+                        sx={{ minWidth: 0, p: 1 }}
+                        variant="outlined"
+                        startIcon={<ChevronLeftIcon />}
+                        onClick={goToPreviousWeek}
+                    />
+                    <Button                         variant= "text"
+>
+                        Today
+                    </Button>
+                    <Button
+                        sx={{ minWidth: 0, p: 1 }}
+                        variant="outlined"
+                        endIcon={<ChevronRightIcon />}
+                        onClick={goToNextWeek}
+                    />
+                </Box>
+            </Box>
 
             {/* Scroll container */}
             <Box
@@ -353,6 +427,19 @@ export default function StudyCalendar({plannerItems}: StudyCalendarProps) {
                     })}
                 </Box>
             </Box>
+
+
+            <Button
+            sx={{ alignSelf: "flex-end", mt: 2 }}
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => {
+                    handleAddPlannerOpen();
+                }}
+            >
+                Add planner
+            </Button>
+            <AddPlannerDialog open={open} setOpen={setOpen} onSubmit={handleAddPlanner}/>
         </Box>
     );
 }
