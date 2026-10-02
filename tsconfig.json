@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "features/planner/components/PlannerItem"  ],
   "exclude": ["node_modules"]
 }

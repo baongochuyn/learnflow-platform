@@ -31,9 +31,11 @@ export const courses: Course[] = [
       "Implement state management using Redux and Context API.",
       "Write unit tests for React components using Jest and React Testing Library.",
     ],
+    startDate: "2026-10-01",
+    endDate: "2026-10-30",
     schedule: [
       { day: "Monday", startTime: "10:00", endTime: "12:00" },
-      { day: "Wednesday", startTime: "2:00 PM", endTime: "4:00 PM" },
+      { day: "Wednesday", startTime: "14:00", endTime: "16:00" },
     ],
     location: "Paris, France",
     learningPath: "React, TypeScript, Redux, Testing",
@@ -68,9 +70,11 @@ export const courses: Course[] = [
       "Implement authentication and authorization in ASP.NET Core applications.",
       "Optimize application performance and scalability.",
     ],
+    startDate: "2026-10-05",
+    endDate: "2026-10-30",
     schedule: [
-      { day: "Tuesday", startTime: "1:00 PM", endTime: "3:00 PM" },
-      { day: "Thursday", startTime: "3:00 PM", endTime: "5:00 PM" },
+      { day: "Tuesday", startTime: "13:00", endTime: "15:00" },
+      { day: "Thursday", startTime: "15:00", endTime: "17:00" },
     ],
     location: "Online",
     learningPath: "C#, ASP.NET Core, RESTful APIs, Authentication",
@@ -105,9 +109,11 @@ export const courses: Course[] = [
       "Implement authentication and authorization in ASP.NET Core applications.",
       "Optimize application performance and scalability.",
     ],
+    startDate: "2026-10-05",
+    endDate: "2026-10-30",
     schedule: [
-      { day: "Tuesday", startTime: "1:00 PM", endTime: "3:00 PM" },
-      { day: "Thursday", startTime: "3:00 PM", endTime: "5:00 PM" },
+      { day: "Tuesday", startTime: "13:00", endTime: "15:00" },
+      { day: "Thursday", startTime: "15:00", endTime: "17:00" },
     ],
     location: "",
     learningPath: "C#, ASP.NET Core, RESTful APIs, Authentication",
@@ -145,10 +151,11 @@ export const courses: Course[] = [
       "Participate in conversations about work, travel, and daily life.",
       "Understand common spoken French expressions.",
     ],
-
+    startDate: "2026-10-01",
+    endDate: "2026-10-30",
     schedule: [
-      { day: "Monday", startTime: "6:00 PM", endTime: "8:00 PM" },
-      { day: "Wednesday", startTime: "6:00 PM", endTime: "8:00 PM" },
+      { day: "Monday", startTime: "18:00", endTime: "20:00" },
+      { day: "Wednesday", startTime: "18:00", endTime: "20:00" },
     ],
 
     location: "Nantes, France",
@@ -195,10 +202,11 @@ export const courses: Course[] = [
       "Prepare for job interviews in French.",
       "Improve professional vocabulary and pronunciation.",
     ],
-
+    startDate: "2026-10-05",
+    endDate: "2026-12-30",
     schedule: [
-      { day: "Tuesday", startTime: "6:30 PM", endTime: "8:30 PM" },
-      { day: "Thursday", startTime: "6:30 PM", endTime: "8:30 PM" },
+      { day: "Tuesday", startTime: "18:30", endTime: "20:30" },
+      { day: "Thursday", startTime: "18:30", endTime: "20:30" },
     ],
 
     location: "Nantes, France",
@@ -245,10 +253,11 @@ export const courses: Course[] = [
       "Understand basic rhythm and music theory.",
       "Practice simple songs independently.",
     ],
-
+    startDate: "2026-09-15",
+    endDate: "2026-12-15",
     schedule: [
-      { day: "Saturday", startTime: "10:00 AM", endTime: "12:00 PM" },
-      { day: "Saturday", startTime: "2:00 PM", endTime: "4:00 PM" },
+      { day: "Saturday", startTime: "10:00", endTime: "12:00" },
+      { day: "Saturday", startTime: "14:00", endTime: "16:00" },
     ],
 
     location: "Nantes, France",
@@ -295,10 +304,11 @@ export const courses: Course[] = [
       "Improve dynamics, rhythm, and musical expression.",
       "Build an individual piano practice routine.",
     ],
-
+    startDate: "2026-09-20",
+    endDate: "2026-12-20",
     schedule: [
-      { day: "Wednesday", startTime: "5:00 PM", endTime: "7:00 PM" },
-      { day: "Saturday", startTime: "11:00 AM", endTime: "1:00 PM" },
+      { day: "Wednesday", startTime: "17:00", endTime: "19:00" },
+      { day: "Saturday", startTime: "11:00", endTime: "13:00" },
     ],
 
     location: "Nantes, France",
@@ -346,9 +356,11 @@ export const courses: Course[] = [
       "Improve verbal and non-verbal communication.",
     ],
 
+    startDate: "2026-09-25",
+    endDate: "2026-11-30",
     schedule: [
-      { day: "Monday", startTime: "6:00 PM", endTime: "9:00 PM" },
-      { day: "Thursday", startTime: "6:00 PM", endTime: "9:00 PM" },
+      { day: "Monday", startTime: "18:00", endTime: "21:00" },
+      { day: "Thursday", startTime: "18:00", endTime: "21:00" },
     ],
 
     location: "Nantes, France",
@@ -397,9 +409,11 @@ export const courses: Course[] = [
       "Automate repetitive tasks with Excel tools.",
     ],
 
+    startDate: "2026-09-25",
+    endDate: "2026-11-30",
     schedule: [
-      { day: "Tuesday", startTime: "6:00 PM", endTime: "9:00 PM" },
-      { day: "Thursday", startTime: "6:00 PM", endTime: "9:00 PM" },
+      { day: "Tuesday", startTime: "18:00", endTime: "21:00" },
+      { day: "Thursday", startTime: "18:00", endTime: "21:00" },
     ],
 
     location: "Nantes, France",
@@ -448,9 +462,11 @@ export const courses: Course[] = [
       "Learn professional kitchen hygiene basics.",
     ],
 
+    startDate: "2026-09-25",
+    endDate: "2026-11-30",
     schedule: [
-      { day: "Saturday", startTime: "9:00 AM", endTime: "12:00 PM" },
-      { day: "Saturday", startTime: "2:00 PM", endTime: "5:00 PM" },
+      { day: "Saturday", startTime: "9:00", endTime: "12:00" },
+      { day: "Saturday", startTime: "14:00", endTime: "17:00" },
     ],
 
     location: "Nantes, France",

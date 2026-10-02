@@ -39,6 +39,8 @@ export type Course = {
   learningPath : string;
   targetAudience: string[];
 
+  startDate : string;
+  endDate : string;
   schedule : ScheduleItem[];
   location? : string;
 };

@@ -29,8 +29,8 @@ export const myCourses: MyCourse[] = [
     learningFormat: "Offline",
     nextSession: {
       day: "Tuesday",
-      startTime: "1:00 PM",
-      endTime: "3:00 PM",
+      startTime: "13:00",
+      endTime: "15:00",
     },
     location: "Online",
     status: "completed",
