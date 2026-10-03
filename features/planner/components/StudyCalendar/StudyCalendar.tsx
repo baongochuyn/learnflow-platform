@@ -1,5 +1,5 @@
 
-import type { PlannerItem } from "@/types/planner";
+import type { PlannerItem, PlannerItemType } from "@/types/planner";
 import { useState, useRef, useEffect } from "react";
 import { Box, Typography, Button } from "@mui/material";
 
@@ -17,6 +17,16 @@ type StudyCalendarProps = {
     date: string;
     startTime: string;
     endTime: string;
+    type: PlannerItemType;
+  }) => void;
+    onUpdatePlanner: (data: {
+    id: number;
+    userId: number;
+    title: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    type: PlannerItemType;
   }) => void;
 };
 
@@ -26,11 +36,15 @@ const HEADER_HEIGHT = 70;
 const TIME_COLUMN_WIDTH = 72;
 const MIN_DAY_WIDTH = 120;
 
-export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalendarProps) {
+export default function StudyCalendar({plannerItems, onAddPlanner, onUpdatePlanner}: StudyCalendarProps) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const calendarRef = useRef<HTMLDivElement | null>(null);
+    const [open, setOpen] = useState(false);
 
     console.log("Planner Items in StudyCalendar:", plannerItems);
+
+    //#region Helper functions
+
      /**
      * Get Monday -> Sunday of the current week.
      */
@@ -151,6 +165,8 @@ export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalenda
         label: `${String(index).padStart(2, "0")}:00`,
     }))
 
+    //#endregion
+    
     const week = getCurrentWeekDates(currentDate);
     const totalCalendarHeight = hours.length * HOUR_HEIGHT;
 
@@ -161,6 +177,9 @@ export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalenda
         }
     }, []);
 
+    /**
+     * Go to previous week
+     */
     function goToPreviousWeek() {
         setCurrentDate((prev) => {
             const date = new Date(prev);
@@ -169,7 +188,9 @@ export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalenda
             return date;
         });
     }
-
+    /**
+     * Go to next week
+     */
     function goToNextWeek() {
         setCurrentDate((prev) => {
             const date = new Date(prev);
@@ -179,19 +200,37 @@ export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalenda
         });
     }
 
-    const [open, setOpen] = useState(false);
-    function handleAddPlannerOpen() {
-        setOpen(true);
-    }
+    /**
+     * Add a new planner item.
+     * @param data The data for the new planner item.
+     */
     function handleAddPlanner(data: {
         title: string;
         date: string;
         startTime: string;
         endTime: string;
+        type: PlannerItemType;
     }){
         console.log("New Planner Item:", data);
         onAddPlanner(data);
         setOpen(false);
+    }
+
+    /**
+     * Update an existing planner item.
+     * @param data The data for the updated planner item.
+     */
+    function handleUpdatePlanner(data: {
+        id: number;
+        userId: number;
+        title: string;
+        date: string;
+        startTime: string;
+        endTime: string;
+        type: PlannerItemType;
+    }){
+        console.log("Updated Planner Item:", data);
+        onUpdatePlanner(data);
     }
     return (
         <Box sx={{ marginTop: 4, marginBottom: 4, display: "flex", flexDirection: "column", gap: 2 }}>
@@ -216,7 +255,7 @@ export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalenda
                     })}
                 </Typography>
 
-                
+                {/* Navigation buttons */}
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                     <Button
                         sx={{ minWidth: 0, p: 1 }}
@@ -419,6 +458,7 @@ export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalenda
                                                 top,
                                                 height,
                                             }}
+                                            onUpdatePlan={handleUpdatePlanner}
                                         />
                                     );
                                 })}
@@ -434,7 +474,7 @@ export default function StudyCalendar({plannerItems, onAddPlanner}: StudyCalenda
                 variant="contained"
                 startIcon={<AddIcon />}
                 onClick={() => {
-                    handleAddPlannerOpen();
+                    setOpen(true);
                 }}
             >
                 Add planner

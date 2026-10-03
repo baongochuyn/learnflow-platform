@@ -8,7 +8,7 @@ import StudyCalendar from "@/features/planner/components/StudyCalendar/StudyCale
 
 export default function PlannerPage() {
     const { currentUser } = useAuth();
-    const { plannerItems, isLoading, error, createPlanner } = usePlanner();
+    const { plannerItems, isLoading, error, createPlanner, updatePlanner } = usePlanner();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -54,7 +54,7 @@ export default function PlannerPage() {
                     </Typography>
                 )}
             </Box>
-            <StudyCalendar plannerItems={plannerItems} onAddPlanner={createPlanner} />
+            <StudyCalendar plannerItems={plannerItems} onAddPlanner={createPlanner} onUpdatePlanner={updatePlanner} />
         </Container>
     </Box>
   );

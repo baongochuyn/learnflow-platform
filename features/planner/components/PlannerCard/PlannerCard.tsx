@@ -1,19 +1,54 @@
 import { Box, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material";
 
-import type { PlannerItem as PlannerItemType } from "@/types/planner";
+import type { PlannerItem, PlannerItemType } from "@/types/planner";
+
+import { useState } from "react";
+import PlannerDetailDialog from "@/features/planner/components/PlannerDetailDialog";
 
 type PlannerItemProps = {
-    item: PlannerItemType;
+    item: PlannerItem;
     sx?: SxProps<Theme>;
+    onUpdatePlan : (data: {
+        id: number;
+        userId: number;
+        title: string;
+        date: string;
+        startTime: string;
+        endTime: string;
+        type: PlannerItemType;
+    }) => void;
 };
 
 export default function PlannerCard({
     item,
-    sx
+    sx,
+    onUpdatePlan
 }: PlannerItemProps) {
+    const [detailOpen, setDetailOpen] = useState(false);
+
+    function handlePlannerClick() {
+        console.log("Clicked on planner item:", item);
+        setDetailOpen(true);
+    }
+    function handleModify(
+        updatedItem: Omit<PlannerItem, "id" | "userId">
+    ) {
+        onUpdatePlan({
+            id: item.id,
+            userId: item.userId,
+            title: updatedItem.title,
+            date: updatedItem.date,
+            startTime: updatedItem.startTime,
+            endTime: updatedItem.endTime,
+            type: updatedItem.type,
+        });
+        setDetailOpen(false);
+    }
+
     return (
-        <Box
+    <Box>
+        <Box onClick={handlePlannerClick}
             sx={{
                 position: "absolute",
 
@@ -64,6 +99,14 @@ export default function PlannerCard({
             >
                 {item.startTime} – {item.endTime}
             </Typography>
+        
         </Box>
+        <PlannerDetailDialog
+            open={detailOpen}
+            plannerItem={item}
+            onUpdate={handleModify}
+            setOpen={setDetailOpen}
+        />
+    </Box>
     );
 }

@@ -1,3 +1,5 @@
+import type { PlannerItemType } from "@/types/planner";
+
 export type StudyPlan = {
   id: number;
   userId: number;
@@ -6,4 +8,5 @@ export type StudyPlan = {
   startTime: string;
   endTime: string;
   courseId?: number;
+  type?: PlannerItemType;
 };

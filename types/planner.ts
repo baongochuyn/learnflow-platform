@@ -8,9 +8,9 @@ export type PlannerItemType =
   | "reminder";
 
 export type PlannerItem = {
-  id: string;
+  id: number;
   type: PlannerItemType;
-
+  userId: number;
   title: string;
 
   date: string;
