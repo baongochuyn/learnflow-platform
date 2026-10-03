@@ -135,7 +135,7 @@ export default function Home() {
           }}
         >
           <FeatureCard title="Courses" description="Discover and explore courses that match your learning goals." href="/courses" />
-          <FeatureCard title="Schedule" description="Plan and manage your study schedule effectively." href="/schedule" />
+          <FeatureCard title="Planner" description="Plan and manage your study schedule effectively." href="/planner" />
           <FeatureCard title="Tasks" description="Organize your learning tasks and keep track of your progress." href="/tasks" />
         </Box>
 
