@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { addStudyPlan, getPlannerItems } from "@/services/plannerService";
-import type { PlannerItem } from "@/types/planner";
+import { addPlan, getPlannerItems, updatePlan} from "@/services/plannerService";
+import type { PlannerItem, PlannerItemType } from "@/types/planner";
 
 export function usePlanner() {
   const { currentUser } = useAuth();
@@ -40,18 +40,20 @@ export function usePlanner() {
     date: string;
     startTime: string;
     endTime: string;
+    type :  PlannerItemType;
   }) {
     if (!currentUser) {
       return;
     }
 
     try {
-      addStudyPlan({
+      addPlan({
         userId: currentUser.id,
         title: data.title,
         date: data.date,
         startTime: data.startTime,
         endTime: data.endTime,
+        type: data.type,
       });
 
       setPlannerItems(getPlannerItems(currentUser.id));
@@ -61,10 +63,45 @@ export function usePlanner() {
     }
   }
 
+  // update planner item
+  function updatePlanner(planner: {
+    id: number;
+    userId: number;
+    title: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    type :  PlannerItemType;
+  }) {
+    if (!currentUser) {
+      return;
+    }
+
+    try {
+      // Update the planner item in the data source
+      // Assuming you have a function updatePlan to handle this
+      updatePlan(planner.id, {
+        title: planner.title,
+        date: planner.date,
+        startTime: planner.startTime,
+        endTime: planner.endTime,
+        type: planner.type,
+      });
+
+      // Refresh the planner items after the update
+      setPlannerItems(getPlannerItems(currentUser.id));
+    } catch (error) {
+      console.error(error);
+      setError("Failed to update planner item.");
+    }
+  }
+
+
   return {
     plannerItems,
     isLoading,
     error,
     createPlanner,
+    updatePlanner,
   };
 }
