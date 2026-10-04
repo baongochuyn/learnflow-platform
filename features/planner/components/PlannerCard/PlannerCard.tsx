@@ -18,12 +18,14 @@ type PlannerItemProps = {
         endTime: string;
         type: PlannerItemType;
     }) => void;
+    onDeletePlan: (id: number) => void;
 };
 
 export default function PlannerCard({
     item,
     sx,
-    onUpdatePlan
+    onUpdatePlan,
+    onDeletePlan,
 }: PlannerItemProps) {
     const [detailOpen, setDetailOpen] = useState(false);
 
@@ -106,6 +108,7 @@ export default function PlannerCard({
             plannerItem={item}
             onUpdate={handleModify}
             setOpen={setDetailOpen}
+            onDeletePlan={onDeletePlan}
         />
     </Box>
     );
