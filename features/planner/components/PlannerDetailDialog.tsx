@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, MenuItem } from "@mui/material";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
+import {useSnackbar} from "@/context/SnackbarContext";
+
 import type { PlannerItem , PlannerItemType} from "@/types/planner";
 import DialogCustom from "@/app/components/DialogCustom";
 type PlannerDetailDialogProps = {
@@ -22,7 +24,8 @@ export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOp
      const [type, setType] = useState<PlannerItemType>(plannerItem.type);
 
      const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
-
+    const { showSnackbar } = useSnackbar();
+    
      const typePlannerOptions: {
     value: PlannerItemType;
     label: string;
@@ -31,8 +34,16 @@ export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOp
     { value: "assignment", label: "Assignment" },
     { value: "exam", label: "Exam" },
     { value: "reminder", label: "Reminder" },
+    { value: "course", label: "Course" },
   ];
 
+  const handleModify = () => {
+    if (plannerItem.type === "course") {
+        showSnackbar("You cannot modify a course planner item.", "error");
+        return;
+    }
+    setReadOnly(false);
+  };
   const handleClose = () => {
     setTitle(plannerItem.title);
     setDate(plannerItem.date);
@@ -44,12 +55,16 @@ export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOp
   };
 
   const handleDelete = () => {
-    console.log("Delete planner item with ID:", plannerItem.id);
-    console.log(open);
+    if(plannerItem.type === "course") {
+        showSnackbar("You cannot delete a course planner item.", "error");
+        setOpenConfirmDelete(false);
+        return;
+    }
     onDeletePlan(plannerItem.id);
     setOpen(false);
     setReadOnly(true);
     setOpenConfirmDelete(false);
+    showSnackbar("Planner item deleted successfully.", "success");
   };
 
   const handleSave = () => {
@@ -62,6 +77,7 @@ export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOp
     });
     setOpen(false);
     setReadOnly(true);
+    showSnackbar("Planner item updated successfully.", "success");
   };
 return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
@@ -172,7 +188,7 @@ return (
             : <Button 
                 sx={{ minWidth: "100px" }}
                 variant="contained" 
-                onClick={() => setReadOnly(false)}>Modify</Button>}
+                onClick={handleModify}>Modify</Button>}
         </DialogActions>
 
         <DialogCustom 
