@@ -187,3 +187,13 @@ export function updatePlan(
     ...updatedPlan,
   };
 }
+
+export function deletePlan(PlanId: number) {
+  const index = plannerItems.findIndex((item) => item.id === PlanId && item.type !== "course");
+
+  if (index === -1) {
+    throw new Error("Planner item not found");
+  }
+
+  plannerItems.splice(index, 1);
+}

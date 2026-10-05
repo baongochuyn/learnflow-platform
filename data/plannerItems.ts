@@ -78,7 +78,7 @@ export const plannerItems: PlannerItem[] = [
       {
     id: 8,
     userId: 1,
-    type: "reminder",
+    type: "course",
     title: "Français général – Niveau B1",
     date: "2026-10-09",
     startTime: "20:00",

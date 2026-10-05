@@ -1,16 +1,21 @@
 
 import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, MenuItem } from "@mui/material";
-import type { PlannerItem , PlannerItemType} from "@/types/planner";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
+import {useSnackbar} from "@/context/SnackbarContext";
+
+import type { PlannerItem , PlannerItemType} from "@/types/planner";
+import DialogCustom from "@/app/components/DialogCustom";
 type PlannerDetailDialogProps = {
     open: boolean;
     plannerItem: PlannerItem;
     onUpdate: (planner: Omit<PlannerItem, "id" | "userId">) => void;
     setOpen: (open: boolean) => void;
+    onDeletePlan: (id: number) => void;
 };
 
-export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOpen }: PlannerDetailDialogProps) {
+export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOpen, onDeletePlan }: PlannerDetailDialogProps) {
     const [readOnly, setReadOnly] = useState(true);
     const [title, setTitle] = useState(plannerItem.title);
      const [date, setDate] = useState(plannerItem.date);
@@ -18,6 +23,9 @@ export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOp
      const [endTime, setEndTime] = useState(plannerItem.endTime);
      const [type, setType] = useState<PlannerItemType>(plannerItem.type);
 
+     const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+    const { showSnackbar } = useSnackbar();
+    
      const typePlannerOptions: {
     value: PlannerItemType;
     label: string;
@@ -26,8 +34,16 @@ export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOp
     { value: "assignment", label: "Assignment" },
     { value: "exam", label: "Exam" },
     { value: "reminder", label: "Reminder" },
+    { value: "course", label: "Course" },
   ];
 
+  const handleModify = () => {
+    if (plannerItem.type === "course") {
+        showSnackbar("You cannot modify a course planner item.", "error");
+        return;
+    }
+    setReadOnly(false);
+  };
   const handleClose = () => {
     setTitle(plannerItem.title);
     setDate(plannerItem.date);
@@ -37,6 +53,20 @@ export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOp
     setOpen(false);
     setReadOnly(true);
   };
+
+  const handleDelete = () => {
+    if(plannerItem.type === "course") {
+        showSnackbar("You cannot delete a course planner item.", "error");
+        setOpenConfirmDelete(false);
+        return;
+    }
+    onDeletePlan(plannerItem.id);
+    setOpen(false);
+    setReadOnly(true);
+    setOpenConfirmDelete(false);
+    showSnackbar("Planner item deleted successfully.", "success");
+  };
+
   const handleSave = () => {
     onUpdate({
       title,
@@ -47,6 +77,7 @@ export default function PlannerDetailDialog({ open, onUpdate, plannerItem, setOp
     });
     setOpen(false);
     setReadOnly(true);
+    showSnackbar("Planner item updated successfully.", "success");
   };
 return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
@@ -140,16 +171,34 @@ return (
           sx={{ minWidth: "100px" }} 
           onClick={handleClose}>Close</Button>
 
-            {!readOnly ? (<Button 
+            {!readOnly ? (
+                <Box sx={{ display: "flex", gap: 1 }}>
+                <Button 
                 sx={{ minWidth: "100px" }}
                 variant="contained" 
                 disabled={!!title && !!date && !!startTime && !!endTime && !!type ? false : true}
-                onClick={handleSave}>Save</Button>) 
+                onClick={handleSave}>Save</Button>
+                     <Button 
+                sx={{ minWidth: "100px" }}
+                variant="contained" 
+                disabled={!!title && !!date && !!startTime && !!endTime && !!type ? false : true}
+                startIcon={<DeleteRoundedIcon />}
+                onClick={() => setOpenConfirmDelete(true)}>Delete</Button>
+                </Box>) 
             : <Button 
                 sx={{ minWidth: "100px" }}
                 variant="contained" 
-                onClick={() => setReadOnly(false)}>Modify</Button>}
+                onClick={handleModify}>Modify</Button>}
         </DialogActions>
+
+        <DialogCustom 
+        open={openConfirmDelete} 
+        onClose={() => setOpenConfirmDelete(false)} 
+        title="Delete Planner"
+        children={<p>Are you sure you want to delete this planner?</p>}
+        onClick={handleDelete}
+        confirmText="Delete"
+         />;
       </Dialog>
     );
             

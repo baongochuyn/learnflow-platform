@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { addPlan, getPlannerItems, updatePlan} from "@/services/plannerService";
+import { addPlan, deletePlan, getPlannerItems, updatePlan} from "@/services/plannerService";
 import type { PlannerItem, PlannerItemType } from "@/types/planner";
 
 export function usePlanner() {
@@ -96,6 +96,22 @@ export function usePlanner() {
     }
   }
 
+  function deletePlanner(id: number) {
+    if (!currentUser) {
+      return;
+    }
+    
+    try {
+      // Assuming you have a function deletePlan to handle this
+      deletePlan(id);
+
+      // Refresh the planner items after deletion
+      setPlannerItems(getPlannerItems(currentUser.id));
+    } catch (error) {
+      console.error(error);
+      setError("Failed to delete planner item.");
+    }
+  }
 
   return {
     plannerItems,
@@ -103,5 +119,6 @@ export function usePlanner() {
     error,
     createPlanner,
     updatePlanner,
+    deletePlanner,
   };
 }

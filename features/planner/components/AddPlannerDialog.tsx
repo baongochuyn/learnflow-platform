@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, MenuItem} from "@mui/material";
 import {useAuth} from "@/context/AuthContext";
+import {useSnackbar} from "@/context/SnackbarContext";
 
 import type { PlannerItemType } from "@/types/planner";
 import DialogCustom from "@/app/components/DialogCustom";
@@ -17,6 +18,7 @@ type AddPlannerDialogProps = {
 };
 export default function AddPlannerDialog({ open, setOpen, onSubmit }: AddPlannerDialogProps) {
   const { currentUser } = useAuth();
+  const { showSnackbar } = useSnackbar();
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -35,6 +37,11 @@ export default function AddPlannerDialog({ open, setOpen, onSubmit }: AddPlanner
 
   const handleClose = () => {
     setOpen(false);
+    setTitle("");
+    setDate("");
+    setStartTime("");
+    setEndTime("");
+    setType("");
   };
 
   const handleSubmit = () => {
@@ -46,6 +53,13 @@ export default function AddPlannerDialog({ open, setOpen, onSubmit }: AddPlanner
       endTime,
       type,
     });
+    showSnackbar("Planner item added successfully.", "success");
+    setOpen(false);
+    setTitle("");
+    setDate("");
+    setStartTime("");
+    setEndTime("");
+    setType("");
   }
 
   if (!currentUser) {

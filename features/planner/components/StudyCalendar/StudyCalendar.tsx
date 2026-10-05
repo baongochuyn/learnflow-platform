@@ -28,6 +28,7 @@ type StudyCalendarProps = {
     endTime: string;
     type: PlannerItemType;
   }) => void;
+    onDeletePlanner: (id: number) => void;
 };
 
 const HOUR_HEIGHT = 100;
@@ -36,7 +37,7 @@ const HEADER_HEIGHT = 70;
 const TIME_COLUMN_WIDTH = 72;
 const MIN_DAY_WIDTH = 120;
 
-export default function StudyCalendar({plannerItems, onAddPlanner, onUpdatePlanner}: StudyCalendarProps) {
+export default function StudyCalendar({plannerItems, onAddPlanner, onUpdatePlanner, onDeletePlanner}: StudyCalendarProps) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const calendarRef = useRef<HTMLDivElement | null>(null);
     const [open, setOpen] = useState(false);
@@ -232,6 +233,12 @@ export default function StudyCalendar({plannerItems, onAddPlanner, onUpdatePlann
         console.log("Updated Planner Item:", data);
         onUpdatePlanner(data);
     }
+
+    function handleDeletePlanner(id: number) {
+        console.log("Delete Planner Item ID:", id);
+        onDeletePlanner(id);
+    }
+
     return (
         <Box sx={{ marginTop: 4, marginBottom: 4, display: "flex", flexDirection: "column", gap: 2 }}>
             {/* Calendar title */}
@@ -459,6 +466,7 @@ export default function StudyCalendar({plannerItems, onAddPlanner, onUpdatePlann
                                                 height,
                                             }}
                                             onUpdatePlan={handleUpdatePlanner}
+                                            onDeletePlan={handleDeletePlanner}
                                         />
                                     );
                                 })}
