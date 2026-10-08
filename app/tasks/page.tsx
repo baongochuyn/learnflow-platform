@@ -8,21 +8,7 @@ import { useTasks } from "@/hooks/useTasks";
 
 export default function TasksPage() {
     const { currentUser } = useAuth();
-    const { columns, tasks, loading } = useTasks();
-
-    // if (!currentUser) {
-    //     return <Box sx={{ minHeight: "100vh", bgcolor: "#020817", color: "#f8fafc", py: { xs: 6, md: 8 } }}>
-    //             <Typography
-    //                     variant="body1"
-    //                     sx={{
-    //                     color: "#f87171",
-    //                     mt: 1,
-    //                     }}
-    //                 >
-    //                     Please log in to access your tasks.
-    //             </Typography>
-    //     </Box>;
-    // }
+    const { columns, tasks, loading, addTask } = useTasks();
 
     if (loading) {
         return <div>Loading...</div>;
@@ -52,7 +38,16 @@ export default function TasksPage() {
                 >
                     Manage your learning tasks and keep track of your progress.
                 </Typography>
-                {!currentUser && (
+                {currentUser ? <Container
+                    maxWidth="xl"
+                    sx={{ py: 4 }}
+                    >
+                    <TaskBoard
+                        columns={columns}
+                        tasks={tasks}
+                        onAddTask={addTask}
+                    />
+                </Container> : (
                     <Typography
                         variant="body1"
                         sx={{
@@ -63,15 +58,6 @@ export default function TasksPage() {
                         Please log in to access your tasks.
                     </Typography>
                 )}
-                <Container
-                    maxWidth="xl"
-                    sx={{ py: 4 }}
-                    >
-                    <TaskBoard
-                        columns={columns}
-                        tasks={tasks}
-                    />
-                </Container>
             </Box>
         </Container>
     </Box>

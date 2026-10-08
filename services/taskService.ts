@@ -1,4 +1,4 @@
-import type { TaskColumn, Task } from "../types/task";
+import type { TaskColumn, Task, TaskLabel } from "../types/task";
 import { taskColumns } from "../data/taskColumns";
 import { tasks } from "../data/tasks";
 
@@ -40,12 +40,22 @@ export function deleteTaskColumn(columnId: string): void {
     taskColumns.splice(columnIndex, 1);
 }
 
-export function createTask(userId: number, columnId: string, title: string): Task {
+export function createTask(
+    userId: number, 
+    columnId: string, 
+    title: string,
+    description?: string,
+    dueDate?: string,
+    labels?: TaskLabel[]
+): Task {
     const newTask: Task = {
         id: `task-${tasks.length + 1}`,
         userId,
         columnId,
         title,
+        description,
+        dueDate,
+        labels,
         completed: false,
         position: tasks.filter((task) => task.columnId === columnId).length,
     };

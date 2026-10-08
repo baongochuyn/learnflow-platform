@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-import type { Task, TaskColumn } from "@/types/task";
+import type { Task, TaskColumn, TaskLabel } from "@/types/task";
 import {
   getTaskColumnsByUserId,
   getTaskByUserId,
+  createTask 
 } from "../services/taskService";
 import { useAuth } from "@/context/AuthContext";
 
@@ -40,9 +41,31 @@ export function useTasks() {
     loadTasks();
   }, [currentUser]);
 
+  function addTask(data: {
+    title: string;
+    description?: string;
+    dueDate?: string;
+    columnId: string;
+    labels?: TaskLabel[];
+  }) {
+    if (!currentUser) {
+      return;
+    }
+    const newTask = createTask(
+      currentUser.id,
+      data.columnId,
+      data.title,
+      data.description,
+      data.dueDate,
+      data.labels
+    );
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  }
+
   return {
     columns,
     tasks,
     loading,
+    addTask,
   };
 }

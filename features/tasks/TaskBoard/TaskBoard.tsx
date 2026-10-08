@@ -14,11 +14,18 @@ import TaskColumnComponent from "../TaskColumn/TaskColumn";
 type TaskBoardProps = {
   columns: TaskColumn[];
   tasks: Task[];
+  onAddTask: (data: {
+    title: string;
+    description?: string;
+    dueDate?: string;
+    columnId: string;
+  }) => void;
 };
 
 export default function TaskBoard({
   columns,
   tasks,
+  onAddTask,
 }: TaskBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -54,6 +61,7 @@ export default function TaskBoard({
                 key={column.id}
                 column={column}
                 tasks={columnTasks}
+                onAddTask={onAddTask}
               />
             );
           })}
