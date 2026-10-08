@@ -5,7 +5,7 @@ import { Box, Typography, Button } from "@mui/material";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import AddIcon from "@mui/icons-material/Add";
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
 import  PlannerCard from "@/features/planner/components/PlannerCard/PlannerCard";
 import AddPlannerDialog from "@/features/planner/components/AddPlannerDialog";
@@ -480,7 +480,7 @@ export default function StudyCalendar({plannerItems, onAddPlanner, onUpdatePlann
             <Button
             sx={{ alignSelf: "flex-end", mt: 2 }}
                 variant="contained"
-                startIcon={<AddIcon />}
+                startIcon={<AddCircleOutlineRoundedIcon />}
                 onClick={() => {
                     setOpen(true);
                 }}
