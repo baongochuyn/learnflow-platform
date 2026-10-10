@@ -9,6 +9,9 @@ import {
   createTask,
   updateTask,
   deleteTask as deleteTaskService,
+  updateColumnName as updateColumnNameService,
+  deleteColumn as deleteColumnService,
+  createTaskColumn,
 } from "../services/taskService";
 import { useAuth } from "@/context/AuthContext";
 
@@ -85,6 +88,37 @@ export function useTasks() {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   }
 
+  function updateColumnName(columnId: string, newName: string) {
+    if (!currentUser) {
+      return;
+    }
+    updateColumnNameService(columnId, newName);
+    setColumns((prevColumns) =>
+      prevColumns.map((column) => (column.id === columnId ? { ...column, name: newName } : column))
+    );
+  }
+
+  function deleteColumn(columnId: string) {
+    if (!currentUser) {
+      return;
+    }
+    deleteColumnService(columnId);
+
+    // Delete all tasks in the column
+    setTasks((prevTasks) => prevTasks.filter((task) => task.columnId !== columnId));
+
+    // Delete the column
+    setColumns((prevColumns) => prevColumns.filter((column) => column.id !== columnId));
+  }
+
+  function addColumn(name: string) {
+    if (!currentUser) {
+      return;
+    }
+    const newColumn = createTaskColumn(currentUser.id, name);
+    setColumns((prevColumns) => [...prevColumns, newColumn]);
+  }
+  
   return {
     columns,
     tasks,
@@ -92,5 +126,8 @@ export function useTasks() {
     addTask,
     modifyTask,
     deleteTask,
+    updateColumnName,
+    deleteColumn,
+    addColumn,
   };
 }

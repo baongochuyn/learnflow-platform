@@ -1,5 +1,8 @@
-import { Box, Button } from "@mui/material";
+import { useState } from "react";
+import { Box, Button, TextField } from "@mui/material";
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+
 import {
   DndContext,
   closestCorners,
@@ -22,6 +25,9 @@ type TaskBoardProps = {
   }) => void;
   onModifyTask: (updatedTask: Task) => void;
   onDeleteTask: (taskId: string) => void;
+  onUpdateColumnName: (columnId: string, newName: string) => void;
+  onDeleteColumn: (columnId: string) => void;
+  onAddColumn: (name: string) => void;
 };
 
 export default function TaskBoard({
@@ -29,7 +35,10 @@ export default function TaskBoard({
   tasks,
   onAddTask,
   onModifyTask,
-  onDeleteTask
+  onDeleteTask,
+  onUpdateColumnName,
+  onDeleteColumn,
+  onAddColumn
 }: TaskBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -38,7 +47,8 @@ export default function TaskBoard({
       },
     })
   );
-
+  const [newColumnName, setNewColumnName] = useState("");
+  const [addingColumn, setAddingColumn] = useState(false);
   return (
     <DndContext
       sensors={sensors}
@@ -70,19 +80,79 @@ export default function TaskBoard({
                 onAddTask={onAddTask}
                 onModifyTask={onModifyTask}
                 onDeleteTask={onDeleteTask}
+                onUpdateColumnName={onUpdateColumnName}
+                onDeleteColumn={onDeleteColumn}
               />
             );
           })}
       
-          
+        <Box>
+          {addingColumn ? (
+            <Box 
+              sx={{
+              width: 300,
+              minWidth: 300,
+              minHeight: 500,
+
+              bgcolor: "transparent",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+
+              borderRadius: 0.5,
+              p: 2,
+
+              transition: "background-color 0.2s",
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+            }}
+            >
+              <TextField
+              variant="standard"
+                value={newColumnName}
+                onChange={(e) => setNewColumnName(e.target.value)}
+                placeholder="Enter column name"
+                size="small"
+               
+              />
+              <Box sx={{ display: "flex", gap: 1 , paddingTop: 1}}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={() => {
+                    if (newColumnName.trim()) {
+                      onAddColumn(newColumnName.trim());
+                      setNewColumnName("");
+                      setAddingColumn(false);
+                    }
+                  }}
+                  startIcon={<AddCircleOutlineRoundedIcon />}
+                >
+                  Add
+                </Button>
+                <Button
+                fullWidth
+                  variant="outlined"
+                  onClick={() => {
+                    setNewColumnName("");
+                    setAddingColumn(false);
+                  }}
+                  endIcon={<CloseRoundedIcon />}
+                >
+                </Button>
+              </Box>
+            </Box>
+          ) : (
         <Button fullWidth
-          sx={{ alignSelf: "flex-start", mt: 2, minWidth: "200px" }}
-          variant="contained"
-          startIcon={<AddCircleOutlineRoundedIcon />}
-          onClick={() => {}}
-        >
-          Add Column
-        </Button>
+            sx={{ alignSelf: "flex-start", mt: 2, minWidth: "200px" }}
+            variant="contained"
+            startIcon={<AddCircleOutlineRoundedIcon />}
+            onClick={() => {setAddingColumn(true);}}
+          >
+            Add Column
+          </Button>)
+        }
+        </Box>
+        
 
       </Box>
     </DndContext>

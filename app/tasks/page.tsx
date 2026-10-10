@@ -8,7 +8,9 @@ import { useTasks } from "@/hooks/useTasks";
 
 export default function TasksPage() {
     const { currentUser } = useAuth();
-    const { columns, tasks, loading, addTask, modifyTask, deleteTask } = useTasks();
+    const { columns, tasks, loading, 
+        addTask, modifyTask, deleteTask, updateColumnName, deleteColumn , addColumn
+    } = useTasks();
 
     if (loading) {
         return <div>Loading...</div>;
@@ -45,6 +47,9 @@ export default function TasksPage() {
                         onAddTask={addTask}
                         onModifyTask={modifyTask}
                         onDeleteTask={deleteTask}
+                        onUpdateColumnName={updateColumnName}
+                        onDeleteColumn={deleteColumn}
+                        onAddColumn={addColumn}
                     />
                 : (
                     <Typography

@@ -82,3 +82,28 @@ export function deleteTask(taskId: string): void {
     }
     tasks.splice(taskIndex, 1);
 }
+
+export function updateColumnName(columnId: string, newName: string): void {
+    const columnIndex = taskColumns.findIndex((column) => column.id === columnId);
+    if (columnIndex === -1) {
+        throw new Error("Task column not found");
+    }
+    taskColumns[columnIndex].name = newName;
+}
+
+export function deleteColumn(columnId: string): void {
+    // Delete all tasks in the column
+    for (let i = tasks.length - 1; i >= 0; i--) {
+        if (tasks[i].columnId === columnId) {
+            tasks.splice(i, 1);
+        }
+    }
+
+    // Delete the column
+    const columnIndex = taskColumns.findIndex((column) => column.id === columnId);
+    if (columnIndex === -1) {
+        throw new Error("Task column not found");
+    }
+    taskColumns.splice(columnIndex, 1);
+}
+
