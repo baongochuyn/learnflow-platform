@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button,Checkbox, 
   TextField, Box,Typography, Select, MenuItem } from "@mui/material";
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 
-import type { Task, TaskLabel } from "@/types/task";
+import type { Task } from "@/types/task";
 import {taskLabels} from "@/data/tasks";
 
 type TaskItemDetailDialogProps = {
@@ -78,6 +78,13 @@ export default function TaskItemDetailDialog(
     onClose();
   };
   
+  useEffect(() => {
+    console.log("TaskItemDetailDialog useEffect triggered with task:", task, "and open:", open);
+  if (!open) return;
+
+  setCompleted(task.completed);
+}, [task, open]);
+
   return (
     <Dialog open={open} onClose={handleClose} sx={{ minWidth: 400 }}>
       <DialogTitle>

@@ -7,7 +7,8 @@ import {
   getTaskColumnsByUserId,
   getTaskByUserId,
   createTask,
-  updateTask
+  updateTask,
+  deleteTask as deleteTaskService,
 } from "../services/taskService";
 import { useAuth } from "@/context/AuthContext";
 
@@ -78,11 +79,18 @@ export function useTasks() {
     );
   }
 
+  function deleteTask(taskId: string) {
+    deleteTaskService(taskId);
+
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  }
+
   return {
     columns,
     tasks,
     loading,
     addTask,
     modifyTask,
+    deleteTask,
   };
 }

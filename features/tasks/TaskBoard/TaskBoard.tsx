@@ -21,6 +21,7 @@ type TaskBoardProps = {
     columnId: string;
   }) => void;
   onModifyTask: (updatedTask: Task) => void;
+  onDeleteTask: (taskId: string) => void;
 };
 
 export default function TaskBoard({
@@ -28,6 +29,7 @@ export default function TaskBoard({
   tasks,
   onAddTask,
   onModifyTask,
+  onDeleteTask
 }: TaskBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -67,6 +69,7 @@ export default function TaskBoard({
                 tasks={columnTasks}
                 onAddTask={onAddTask}
                 onModifyTask={onModifyTask}
+                onDeleteTask={onDeleteTask}
               />
             );
           })}

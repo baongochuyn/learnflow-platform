@@ -2,8 +2,10 @@ import { Box, Checkbox, Typography } from "@mui/material";
 import RadioButtonUncheckedRoundedIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
 import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded';
 import AccessAlarmsRoundedIcon from '@mui/icons-material/AccessAlarmsRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import TaskItemDetailDialog from "./TaskItemDetailDialog";
+import DialogCustom from "@/app/components/DialogCustom";
 
 import {
   useSortable,
@@ -16,11 +18,13 @@ import { useState } from "react";
 type TaskItemProps = {
   task: Task;
   onModifyTask: (updatedTask: Task) => void;
+  onDeleteTask: (taskId: string) => void;
 };
 
 export default function TaskItem({
   task,
   onModifyTask,
+  onDeleteTask
 }: TaskItemProps) {
   const {
     attributes,
@@ -30,17 +34,22 @@ export default function TaskItem({
     transition,
   } = useSortable({ id: task.id });
   const [openTaskDetailDialog, setOpenTaskDetailDialog] = useState(false);
-  const [completed, setCompleted] = useState(task.completed);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
-  const handleCheckboxChange = () => {
-    const newCompleted = !completed;
-    setCompleted(newCompleted);
-    onModifyTask({ ...task, completed: newCompleted });
+  const handleCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.stopPropagation();
+
+    onModifyTask({
+      ...task,
+      completed: event.target.checked,
+    });
   };
 
   function formatDueDateTime(value?: string) {
@@ -54,12 +63,18 @@ export default function TaskItem({
   const formattedDate = date.toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
-  });
+    });
 
-  return timePart
-    ? `${formattedDate} · ${timePart.slice(0, 5)}`
-    : formattedDate;
-}
+    return timePart
+      ? `${formattedDate} · ${timePart.slice(0, 5)}`
+      : formattedDate;
+  }
+
+  function handleDeleteTask() {
+    //onDeleteTask(task.id);
+    setConfirmDelete(true);
+  }
+
   return (
   <Box>
     <Box
@@ -92,6 +107,7 @@ export default function TaskItem({
           },
       }}
     >
+      <Box sx={{ display: "flex", flexDirection: "row", flex: 1, alignItems: "center" }}>
       {task.labels?.[0]?.color && (
         <Box
           sx={{
@@ -103,6 +119,14 @@ export default function TaskItem({
           }}
         />
       )}
+      <CloseRoundedIcon sx={{
+        ml: "auto",
+        color: "text.secondary",
+        fontSize: 14,
+      }}
+      onClick={handleDeleteTask}
+      />
+      </Box>
       <Box sx={{
         display: "flex",
         alignItems: "center",
@@ -168,6 +192,21 @@ export default function TaskItem({
       onClose={() => setOpenTaskDetailDialog(false)}
       onModifyTask={onModifyTask}
     />
+    <DialogCustom
+      open={confirmDelete}
+      onClose={() => setConfirmDelete(false)}
+      title="Delete Task"
+      onClick={() => {
+        onDeleteTask(task.id);
+        setConfirmDelete(false);
+      }}
+      confirmText="Delete"
+    >
+      <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        Are you sure you want to delete this task? This action cannot be undone.
+      </Typography>
+    </DialogCustom>
+  
   </Box>
   );
 }

@@ -18,6 +18,7 @@ type TaskColumnProps = {
     columnId: string;
   }) => void;
   onModifyTask: (updatedTask: Task) => void;
+  onDeleteTask: (taskId: string) => void;
 };
 
 export default function TaskColumn({
@@ -25,6 +26,7 @@ export default function TaskColumn({
   tasks,
   onAddTask,
   onModifyTask,
+  onDeleteTask
 }: TaskColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: column.id,
@@ -91,6 +93,7 @@ export default function TaskColumn({
             key={task.id}
             task={task}
             onModifyTask={onModifyTask}
+            onDeleteTask={onDeleteTask}
           />
         ))}
       </Box>
