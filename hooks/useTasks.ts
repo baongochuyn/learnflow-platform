@@ -6,7 +6,8 @@ import type { Task, TaskColumn, TaskLabel } from "@/types/task";
 import {
   getTaskColumnsByUserId,
   getTaskByUserId,
-  createTask 
+  createTask,
+  updateTask
 } from "../services/taskService";
 import { useAuth } from "@/context/AuthContext";
 
@@ -62,10 +63,26 @@ export function useTasks() {
     setTasks((prevTasks) => [...prevTasks, newTask]);
   }
 
+  function modifyTask(updatedTask: Task) {
+    const updated = updateTask(updatedTask.id, {
+      title: updatedTask.title,
+      description: updatedTask.description,
+      dueDateTime: updatedTask.dueDateTime,
+      completed: updatedTask.completed,
+      labels: updatedTask.labels,
+      columnId: updatedTask.columnId,
+      position: updatedTask.position,
+    });
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === updated.id ? updated : task))
+    );
+  }
+
   return {
     columns,
     tasks,
     loading,
     addTask,
+    modifyTask,
   };
 }

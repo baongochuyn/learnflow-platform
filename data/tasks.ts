@@ -1,4 +1,4 @@
-import type { Task } from "@/types/task";
+import type { Task, TaskLabel } from "@/types/task";
 
 export const tasks: Task[] = [
   {
@@ -9,6 +9,14 @@ export const tasks: Task[] = [
     description: "Review the official React docs.",
     completed: false,
     position: 0,
+    labels: [
+      {
+        id: "label-1",
+        name: "Urgent",
+        color: "#FF0000",
+      },
+    ],
+    dueDateTime: "2023-09-15",
   },
   {
     id: "task-2",
@@ -41,5 +49,23 @@ export const tasks: Task[] = [
     title: "Create repository",
     completed: true,
     position: 1,
+  },
+];
+
+export const taskLabels: TaskLabel[] = [
+  {
+    id: "label-1",
+    name: "Urgent",
+    color: "#FF0000",
+  },
+  {
+    id: "label-2",
+    name: "Important",
+    color: "#FFA500",
+  },
+  {
+    id: "label-3",
+    name: "Optional",
+    color: "#008000",
   },
 ];

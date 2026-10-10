@@ -8,7 +8,7 @@ import { useTasks } from "@/hooks/useTasks";
 
 export default function TasksPage() {
     const { currentUser } = useAuth();
-    const { columns, tasks, loading, addTask } = useTasks();
+    const { columns, tasks, loading, addTask, modifyTask } = useTasks();
 
     if (loading) {
         return <div>Loading...</div>;
@@ -38,16 +38,14 @@ export default function TasksPage() {
                 >
                     Manage your learning tasks and keep track of your progress.
                 </Typography>
-                {currentUser ? <Container
-                    maxWidth="xl"
-                    sx={{ py: 4 }}
-                    >
+                {currentUser ? 
                     <TaskBoard
                         columns={columns}
                         tasks={tasks}
                         onAddTask={addTask}
+                        onModifyTask={modifyTask}
                     />
-                </Container> : (
+                : (
                     <Typography
                         variant="body1"
                         sx={{

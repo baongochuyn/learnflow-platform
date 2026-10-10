@@ -45,7 +45,7 @@ export function createTask(
     columnId: string, 
     title: string,
     description?: string,
-    dueDate?: string,
+    dueDateTime?: string,
     labels?: TaskLabel[]
 ): Task {
     const newTask: Task = {
@@ -54,7 +54,7 @@ export function createTask(
         columnId,
         title,
         description,
-        dueDate,
+        dueDateTime,
         labels,
         completed: false,
         position: tasks.filter((task) => task.columnId === columnId).length,

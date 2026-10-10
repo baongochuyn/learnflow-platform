@@ -17,12 +17,14 @@ type TaskColumnProps = {
     dueDate?: string;
     columnId: string;
   }) => void;
+  onModifyTask: (updatedTask: Task) => void;
 };
 
 export default function TaskColumn({
   column,
   tasks,
   onAddTask,
+  onModifyTask,
 }: TaskColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: column.id,
@@ -88,6 +90,7 @@ export default function TaskColumn({
           <TaskItem
             key={task.id}
             task={task}
+            onModifyTask={onModifyTask}
           />
         ))}
       </Box>
@@ -124,6 +127,11 @@ export default function TaskColumn({
               }}
               value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  handleSaveNewTask();
+                }
+              }}
             />
         </Box>) : null}
       </Box>
@@ -150,7 +158,7 @@ export default function TaskColumn({
           </Box>)
           : (<Button fullWidth
           sx={{ mt: 2 }}
-          variant="contained"
+          variant="outlined"
           startIcon={<AddCircleOutlineRoundedIcon />}
           onClick={handleAddTask}
         >

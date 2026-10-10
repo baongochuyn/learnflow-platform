@@ -8,6 +8,7 @@ export type TaskColumn = {
 export type TaskLabel = {
     id: string;
     name: string;
+    color: string;
 };
 
 export type Task = {
@@ -22,5 +23,5 @@ export type Task = {
     position: number;
 
     labels?: TaskLabel[];
-    dueDate?: string;
+    dueDateTime?: string;
 };

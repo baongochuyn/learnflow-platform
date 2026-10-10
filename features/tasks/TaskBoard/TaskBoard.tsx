@@ -20,12 +20,14 @@ type TaskBoardProps = {
     dueDate?: string;
     columnId: string;
   }) => void;
+  onModifyTask: (updatedTask: Task) => void;
 };
 
 export default function TaskBoard({
   columns,
   tasks,
   onAddTask,
+  onModifyTask,
 }: TaskBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -47,6 +49,8 @@ export default function TaskBoard({
           alignItems: "flex-start",
           overflowX: "auto",
           p: 1,
+          marginTop: 4, 
+          marginBottom: 4
         }}
       >
         {columns
@@ -62,6 +66,7 @@ export default function TaskBoard({
                 column={column}
                 tasks={columnTasks}
                 onAddTask={onAddTask}
+                onModifyTask={onModifyTask}
               />
             );
           })}
