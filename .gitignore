@@ -16,9 +16,13 @@
 # next.js
 /.next/
 /out/
+/frontend/.next/
+/frontend/out/
 
 # production
 /build
+/frontend/build/
+/frontend/dist/
 
 # misc
 .DS_Store
@@ -32,6 +36,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+/frontend/.env
 
 # vercel
 .vercel
@@ -39,3 +44,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#.NET build output
+**/bin/
+**/obj/
+
+#Test results
+**/TestResults/
+
+# JetBrains Rider / IntelliJ-based IDEs
+.idea/
