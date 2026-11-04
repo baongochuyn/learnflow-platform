@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/globals.css"],"sourcesContent":["html, body {\n  margin: 0;\n  padding: 0;\n  min-height: 100%;\n  background: #020817;\n  color: #f8fafc;\n  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n}\n\na {\n  color: inherit;\n  text-decoration: none;\n}\n"],"names":[],"mappings":"AAAA;;;;;;;;;AASA;;;;AAIA"}}]
+}
