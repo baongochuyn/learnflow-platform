@@ -30,7 +30,8 @@ public class AuthController : ControllerBase
             request.FirstName,
             request.LastName,
             request.Email,
-            request.Password
+            request.Password,
+            request.RoleId
         );
 
         var result = await _registerCommandHandler.HandleAsync(command, cancellationToken);

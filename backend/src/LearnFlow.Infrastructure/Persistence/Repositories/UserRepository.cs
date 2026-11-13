@@ -62,7 +62,17 @@ public class UserRepository : IUserRepository
     public async Task<User> AddAsync(User user, CancellationToken cancellationToken = default)
     {
         var entity = user.ToPersistence();
-
+        foreach (var role in user.Roles)
+        {
+            var userRole = new user_role()
+            {
+                role_id = role.Id,
+                user = entity,
+                assigned_at = DateTime.UtcNow
+            };
+            await _dbContext.user_roles.AddAsync(userRole, cancellationToken);
+        }
+        
         await _dbContext.users.AddAsync(
             entity,
             cancellationToken);
