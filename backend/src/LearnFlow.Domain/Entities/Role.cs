@@ -21,4 +21,13 @@ public class Role
         Name = name.Trim();
         Description = description;
     }
+
+    public static Role Dehydrate(
+        long id,
+        string name,
+        string? description
+        )
+    {
+        return new Role(id, name, description);
+    }
 }

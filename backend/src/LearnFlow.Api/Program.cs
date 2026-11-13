@@ -21,6 +21,7 @@ builder.Services.AddDbContext<LearnFlowDbContext>(options =>
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 // Services
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

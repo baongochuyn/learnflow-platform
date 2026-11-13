@@ -47,12 +47,12 @@ public class User
 
         if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("Password hash is required.");
-
+        
         FirstName = firstName.Trim();
         LastName = lastName.Trim();
         Email = email.Trim().ToLowerInvariant();
         PasswordHash = passwordHash;
-
+        
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
     }
@@ -84,6 +84,8 @@ public class User
 
     public void AssignRole(Role role)
     {
+        ArgumentNullException.ThrowIfNull(role);
+
         if (_roles.Any(x => x.Id == role.Id))
             return;
 

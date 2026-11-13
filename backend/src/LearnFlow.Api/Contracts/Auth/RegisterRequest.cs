@@ -21,4 +21,8 @@ public class RegisterRequest
     [MinLength(8, ErrorMessage = "Password must contain at least 8 characters.")]
     [MaxLength(128, ErrorMessage = "Password cannot exceed 128 characters.")]
     public string Password { get; set; } = string.Empty;
+    
+    [Required]
+    [Range(1, long.MaxValue)]
+    public long RoleId { get; set; }
 }
