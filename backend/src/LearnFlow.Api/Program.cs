@@ -1,17 +1,34 @@
+using LearnFlow.Application.Features.Auth.Commands.Login;
+using LearnFlow.Application.Features.Auth.Commands.Register;
+using LearnFlow.Application.Interfaces.Repositories;
+using LearnFlow.Application.Interfaces.Services;
+using LearnFlow.Infrastructure.Identity;
 using LearnFlow.Infrastructure.Persistence;
+using LearnFlow.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
+// Database
 builder.Services.AddDbContext<LearnFlowDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("LearnFlowDb")));
+
+// Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Services
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+// Command Handlers
+builder.Services.AddScoped<RegisterCommandHandler>();
+builder.Services.AddScoped<LoginCommandHandler>();
 
 var app = builder.Build();
 
@@ -19,6 +36,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -26,16 +45,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider
-        .GetRequiredService<LearnFlowDbContext>();
-
-    var canConnect = await db.Database.CanConnectAsync();
-
-    Console.WriteLine(
-        $"PostgreSQL connection successful: {canConnect}");
-}
 
 app.Run();
