@@ -4,41 +4,53 @@ import { Box, TextField, Button, IconButton, InputAdornment } from "@mui/materia
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 
-import { validateUsername, validatePassword, validateEmail } from "@/validators/authValidator";
+import { validateName, validatePassword, validateEmail } from "@/validators/authValidator";
 import { StudentSignUpFormData } from "@/types/auth";
 
 
-export default function StudentSignUpForm({ onStudentSignUp}: { onStudentSignUp: (user: StudentSignUpFormData) => void }) {
-    const [username, setUsername] = useState("");
+export default function StudentSignUpForm({ onStudentSignUp}: { onStudentSignUp: (user: StudentSignUpFormData) => Promise<boolean | void> | void }) {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const [usernameError, setUsernameError] = useState<string | null>(null);
+    const [firstNameError, setFirstNameError] = useState<string | null>(null);
+    const [lastNameError, setLastNameError] = useState<string | null>(null);
     const [emailError, setEmailError] = useState<string | null>(null);
     const [passwordError, setPasswordError] = useState<string | null>(null);
     const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
 
     async function handleSignUp() {
-        const student = {
-            username: username,
-            email: email,
+        const student: StudentSignUpFormData = {
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            email: email.trim(),
             password: password,
             confirmPassword: confirmPassword
         };
-        onStudentSignUp(student);
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
+        const isSuccess = await onStudentSignUp(student);
+        if (isSuccess !== false) {
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+        }
     }
 
-    function handleUsernameChange(e: string) {
-        setUsername(e);
-        const error = validateUsername(e);
-        setUsernameError(error);
+    function handleFirstNameChange(value: string) {
+        setFirstName(value);
+        const error = validateName(value, "First name");
+        setFirstNameError(error);
+    }
+
+    function handleLastNameChange(value: string) {
+        setLastName(value);
+        const error = validateName(value, "Last name");
+        setLastNameError(error);
     }
 
     function handleEmailChange(e: string) {
@@ -65,11 +77,19 @@ export default function StudentSignUpForm({ onStudentSignUp}: { onStudentSignUp:
     return (
         <Box>
             <TextField
-                label="Username" type="text" placeholder="Username" sx={{ width: "100%", marginBottom: "10px",marginTop: "10px", padding: "8px" }} 
-                value={username}
-                error={!!usernameError}
-                helperText={usernameError}
-                onChange={(e) => handleUsernameChange(e.target.value)}
+                label="First Name" type="text" placeholder="First Name" sx={{ width: "100%", marginBottom: "10px", marginTop: "10px", padding: "8px" }} 
+                value={firstName}
+                error={!!firstNameError}
+                helperText={firstNameError}
+                onChange={(e) => handleFirstNameChange(e.target.value)}
+            />
+
+            <TextField
+                label="Last Name" type="text" placeholder="Last Name" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
+                value={lastName}
+                error={!!lastNameError}
+                helperText={lastNameError}
+                onChange={(e) => handleLastNameChange(e.target.value)}
             />
             
             <TextField
@@ -136,7 +156,7 @@ export default function StudentSignUpForm({ onStudentSignUp}: { onStudentSignUp:
             />
 
             <Button onClick={handleSignUp} variant="contained" sx={{ width: "100%" }}
-            disabled={!!usernameError || !!emailError || !!passwordError || !!confirmPasswordError || !username || !email || !password || !confirmPassword}
+            disabled={!!firstNameError || !!lastNameError || !!emailError || !!passwordError || !!confirmPasswordError || !firstName || !lastName || !email || !password || !confirmPassword}
             >Sign Up</Button>
         </Box>
     )}

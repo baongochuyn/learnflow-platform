@@ -1,65 +1,138 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
-import type { LoginResult } from "@/types/auth";
-import { validateLogin, validateSignUp } from "@/validators/authValidator";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import type {    
+  AuthUser,
+      LoginResult,
+      SignUpResult,
+      StudentSignUpFormData,
+      TeacherSignUpFormData,
+} from "@/types/auth";
+
+import { validateEmail, validateSignUp } from "@/validators/authValidator";
 import {users} from "@/data/users";
-import type { StudentSignUpFormData, TeacherSignUpFormData } from "@/types/auth";
 import type { User } from "@/types/users";
+import {
+    loginApi,
+    registerApi,
+    getCurrentUserApi,
+  } from "@/services/authService";
+
+  const TOKEN_STORAGE_KEY = "learnflow_access_token";
+
 
 type AuthContextType = {
-  login: (username: string, password: string) => Promise<LoginResult>;
+  login: (email: string, password: string) => Promise<LoginResult>;
   logout: () => void;
-  currentUser: User | null;
-  setCurrentUser: (user: User | null) => void;
-  StudentSignUp: (student: StudentSignUpFormData) => Promise<LoginResult>;
-  TeacherSignUp: (teacher: TeacherSignUpFormData) => Promise<LoginResult>;
+  currentUser: AuthUser | null;
+  setCurrentUser: (user: AuthUser | null) => void;
+  isLoading: boolean;
+  StudentSignUp: (student: StudentSignUpFormData) => Promise<SignUpResult>;
+  TeacherSignUp: (teacher: TeacherSignUpFormData) => Promise<SignUpResult>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default: chưa đăng nhập
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  async function StudentSignUp(user: StudentSignUpFormData): Promise<LoginResult> {
-    const validationError = validateSignUp(user.username, user.email, user.password, user.confirmPassword);
-    if (validationError) {
-      return Promise.resolve({ success: false, message: validationError });
+// Tự động lấy thông tin user từ token khi F5 / khởi động app
+useEffect(() => {
+  async function loadUserFromToken() {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (!token) {
+      setIsLoading(false);
+      return;
     }
-    const newUser = { id: users.length + 1, username: user.username, email: user.email, password: user.password, roleId: 1 };
-    users.push(newUser);
 
-    return Promise.resolve({ success: true });
-  }
-
-  async function TeacherSignUp(user: TeacherSignUpFormData): Promise<LoginResult> {
-    const validationError = validateSignUp(user.username, user.email, user.password, user.confirmPassword);
-    if (validationError) {
-      return Promise.resolve({ success: false, message: validationError });
-    }
-    const newUser = { id: users.length + 1, username: user.username, email: user.email, password: user.password, roleId: 2 };
-    users.push(newUser);
-
-    return Promise.resolve({ success: true });
-  }
-
-  async function login(username: string, password: string) {
-    //TODO:  Simulate a login API call
-
-    const validationError = validateLogin(username, password);
-    if (validationError) {
-      return { success: false, message: validationError };
-    }
-    // find the user in the users array
-    const user = users.find((user) => user.username === username && user.password === password);
-    if (user) {
+    try {
+      const user = await getCurrentUserApi(token);
       setCurrentUser(user);
-      return { success: true } as LoginResult;
-    } else {
-      return { success: false, message: "Invalid username or password" };
+    } catch {
+      // Token hết hạn hoặc không hợp lệ -> xóa token
+      localStorage.removeItem(TOKEN_STORAGE_KEY);
+      setCurrentUser(null);
+    } finally {
+      setIsLoading(false);
     }
   }
+
+  loadUserFromToken();
+}, []);
+
+  async function StudentSignUp(user: StudentSignUpFormData): Promise<SignUpResult> {
+    const validationError = validateSignUp(user.firstName,user.lastName, user.email, user.password, user.confirmPassword);
+    if (validationError) {
+      return Promise.resolve({ success: false, message: validationError });
+    }
+
+    try {
+      console.log("Registering student:", user);
+      const response = await registerApi({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        password: user.password,
+        roleId: 2, // Assuming 2 is the role ID for students
+      });
+          return { success: true };
+    } catch (error) {
+      return Promise.resolve({ success: false, message: "Failed to sign up as student" });
+    }
+
+  }
+
+  async function TeacherSignUp(user: TeacherSignUpFormData): Promise<SignUpResult> {
+    const validationError = validateSignUp(user.firstName,user.lastName, user.email, user.password, user.confirmPassword);
+    if (validationError) {
+      return Promise.resolve({ success: false, message: validationError });
+    }
+    try {
+      await registerApi({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        password: user.password,
+        roleId: 3, // Role Instructor/Teacher trong DB (1 = Admin, 2 = Student, 3 = Instructor)
+      });
+
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : "Registration failed",
+      };
+    }
+  }
+
+async function login(email: string, password: string) : Promise<LoginResult> {
+  const emailError = validateEmail(email);
+  if (emailError) {
+    return { success: false, message: emailError };
+  }
+  if (!password) {
+        return { success: false, message: "Password is required" };
+  }
+    
+  try {
+    const response = await loginApi(email, password);
+    localStorage.setItem(TOKEN_STORAGE_KEY, response.accessToken);
+
+    // Gọi thêm /api/users/me (hoặc dùng trực tiếp response.user)
+    // const fullUser = await getCurrentUserApi(response.accessToken).catch(
+    //   () => response.user
+    // );
+
+    setCurrentUser(response.user);
+    return { success: true, user: response.user };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Invalid email or password",
+    };
+  }
+}
 
   function logout() {
      setCurrentUser(null);
@@ -72,7 +145,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout, 
       setCurrentUser,
       StudentSignUp,
-      TeacherSignUp
+      TeacherSignUp,
+      isLoading
     }}
     >
       {children}

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text;
+using LearnFlow.Api.Middleware;
 using LearnFlow.Application.Features.Auth.Commands.Login;
 using LearnFlow.Application.Features.Auth.Commands.Register;
 using LearnFlow.Application.Features.Auth.Queries.GetCurrentUser;
@@ -85,10 +86,23 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -97,6 +111,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

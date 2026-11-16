@@ -20,15 +20,15 @@ export default function LoginDialog({
     {
     const { login } = useAuth();
     const [error, setError] = useState<string | null>(null);
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
     async function handleLogin(){
-        const reponse = await login(username, password); 
+        const reponse = await login(email, password); 
         if (reponse.success){
             onLoginSuccess();
-            setUsername("");
+            setEmail("");
             setPassword("");
             onClose();
         }else {
@@ -64,9 +64,9 @@ export default function LoginDialog({
                     {error}
                 </Typography>
             )}
-            <TextField label="Username" type="text" placeholder="Username" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+            <TextField label="Email" type="text" placeholder="Email" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
             />
             
             <TextField label="Password"  placeholder="Password" sx={{ width: "100%", marginBottom: "10px", padding: "8px" }} 
@@ -98,14 +98,14 @@ export default function LoginDialog({
                 onClick={handleLogin} 
                 variant="contained" 
                 sx={{ width: "100%" }}
-                disabled={!username || !password}
+                disabled={!email || !password}
             >
                 Login
             </Button>
         </DialogContent>
         <DialogActions sx={{ padding: "20px", textAlign: "center" }}>
             <Typography>
-                Don't have an account?
+                Don&apos;t have an account?
                 <Link 
                     component="button"
                     sx={{ ml: 0.5 }}

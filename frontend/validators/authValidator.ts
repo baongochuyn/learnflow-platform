@@ -1,3 +1,15 @@
+export function validateName(name: string, fieldLabel = "Name"): string | null {
+    if (!name.trim()) {
+      return `${fieldLabel} is required`;
+    }
+
+    if (name.trim().length < 1 || name.trim().length > 100) {
+      return `${fieldLabel} must be between 1 and 100 characters`;
+    }
+
+    return null;
+}
+
 export function validateUsername(username: string): string | null {
     if (!username.trim()) {
       return "Username is required";
@@ -69,26 +81,31 @@ export function validateLogin(username: string, password: string): string | null
   return null;
   }
 
-  export function validateSignUp(
-  username: string,
+export function validateSignUp(
+  firstName: string,
+  lastName: string,
   email: string,
   password: string,
   confirmPassword: string
 ): string | null {
-  
-    const usernameError = validateUsername(username);
-    if (usernameError) {
-      return usernameError;
+    const firstNameError = validateName(firstName, "First name");
+    if (firstNameError) {
+      return firstNameError;
     }
 
-    const passwordError = validatePassword(password);
-    if (passwordError) {
-      return passwordError;
+    const lastNameError = validateName(lastName, "Last name");
+    if (lastNameError) {
+      return lastNameError;
     }
 
     const emailError = validateEmail(email);
     if (emailError) {
       return emailError;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      return passwordError;
     }
 
     if (password !== confirmPassword) {
