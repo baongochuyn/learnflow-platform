@@ -1,11 +1,16 @@
+using System.Security.Claims;
+using System.Text;
 using LearnFlow.Application.Features.Auth.Commands.Login;
 using LearnFlow.Application.Features.Auth.Commands.Register;
+using LearnFlow.Application.Features.Auth.Queries.GetCurrentUser;
 using LearnFlow.Application.Interfaces.Repositories;
 using LearnFlow.Application.Interfaces.Services;
 using LearnFlow.Infrastructure.Identity;
 using LearnFlow.Infrastructure.Persistence;
 using LearnFlow.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +35,56 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 // Command Handlers
 builder.Services.AddScoped<RegisterCommandHandler>();
 builder.Services.AddScoped<LoginCommandHandler>();
+builder.Services.AddScoped<GetCurrentUserQueryHandler>();
+
+// Token
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+
+var issuer = jwtSettings["Issuer"];
+var audience = jwtSettings["Audience"];
+var secretKey = jwtSettings["SecretKey"];
+
+if (string.IsNullOrWhiteSpace(secretKey))
+    throw new InvalidOperationException("JWT SecretKey is missing.");
+
+var key = new SymmetricSecurityKey(
+    Encoding.UTF8.GetBytes(secretKey));
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+
+        options.DefaultChallengeScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+
+        options.DefaultScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = issuer,
+
+            ValidateAudience = true,
+            ValidAudience = audience,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = key,
+
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+
+            NameClaimType = ClaimTypes.NameIdentifier,
+            RoleClaimType = ClaimTypes.Role
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 
 var app = builder.Build();
 
@@ -43,6 +98,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
