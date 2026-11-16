@@ -3,14 +3,14 @@ import type { Role } from "@/types/roles";
 export const roles: Role[] = [
   {
     id: 1,
-    name: "Student",
+    name: "Admin",
   },
   {
     id: 2,
-    name: "Teacher",
+    name: "Student",
   },
   {
     id: 3,
-    name: "Admin",
+    name: "Instructor",
   },
 ];

@@ -22,6 +22,7 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
     {
         var entity = await _dbContext.users
+            .AsNoTracking()
             .Include(u => u.user_roles)
             .ThenInclude(ur => ur.role)
             .FirstOrDefaultAsync(

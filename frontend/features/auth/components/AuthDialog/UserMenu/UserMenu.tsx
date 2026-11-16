@@ -64,7 +64,7 @@ export default function UserMenu() {
             fontWeight: 700,
           }}
         >
-          {currentUser.username.charAt(0).toUpperCase()}
+          {currentUser.firstName.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -95,7 +95,7 @@ export default function UserMenu() {
       >
         <Box sx={{ px: 2, py: 1.5 }}>
           <Typography sx={{ fontWeight: 700 }}>
-            {currentUser.username}
+            {`${currentUser.firstName} ${currentUser.lastName}`}
           </Typography>
 
           <Typography

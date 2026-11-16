@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DialogTitle, DialogContent, TextField, Button, Typography, DialogActions, Link } from "@mui/material";
+import { DialogTitle, DialogContent, Button, Typography, DialogActions, Link } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 
 import { useAuth } from "@/context/AuthContext";
@@ -24,23 +24,25 @@ export default function SignUpDialog({
     const [accountType, setAccountType] = useState<"student" | "teacher">("student");
 
     async function handleStudentSignUp(student : StudentSignUpFormData) {
-        const reponse = await StudentSignUp(student);
-        if (reponse.success) {
-          //TODO : Handle successful sign-up (e.g., show a success message, close the dialog, etc.)
+        setError(null);
+        const response = await StudentSignUp(student);
+        if (response.success) {
           onSignUpSuccess();
-          return;
+          return true;
         } else {
-            setError(reponse.message);
+          setError(response.message);
+          return false;
         }
     }
     async function handleTeacherSignUp(teacher : TeacherSignUpFormData) {
-        const reponse = await TeacherSignUp(teacher);
-        if (reponse.success) {
-          //TODO : Handle successful sign-up (e.g., show a success message, close the dialog, etc.)
+        setError(null);
+        const response = await TeacherSignUp(teacher);
+        if (response.success) {
           onSignUpSuccess();
-          return;
+          return true;
         } else {
-            setError(reponse.message);
+          setError(response.message);
+          return false;
         }
     }
 
